@@ -1,26 +1,25 @@
-import { v1 as uuidv1 } from 'uuid';
 import type { Product, ProductCategory } from '../types.ts';
 
 export const categories: ProductCategory[] = [
   {
-    id: uuidv1(),
+    id: "cat-001",
     name: 'Electrónica',
     slug: 'electronica',
   },
   {
-    id: uuidv1(),
+    id: "cat-002",
     name: 'Periféricos',
     slug: 'perifericos',
     parentSlug: 'electronica',
   },
   {
-    id: uuidv1(),
+    id: "cat-003",
     name: 'Audio',
     slug: 'audio',
     parentSlug: 'electronica',
   },
   {
-    id: uuidv1(),
+    id: "cat-004",
     name: 'Gaming',
     slug: 'gaming',
     parentSlug: 'electronica',
@@ -29,7 +28,7 @@ export const categories: ProductCategory[] = [
 
 export const products: Product[] = [
   {
-    id: uuidv1(),
+    id: "prod-001",
     sku: 'MOUSE-LOGI-G502-BLK',
     name: 'Ratón gaming Logitech G502',
     slug: 'raton-gaming-logitech-g502',
@@ -80,7 +79,7 @@ export const products: Product[] = [
     },
   },
   {
-    id: uuidv1(),
+    id: "prod-002",
     sku: 'KEYB-MECH-RGB-TKL',
     name: 'Teclado mecánico TKL RGB',
     slug: 'teclado-mecanico-tkl-rgb',
@@ -126,7 +125,7 @@ export const products: Product[] = [
     },
   },
   {
-    id: uuidv1(),
+    id: "prod-003",
     sku: 'HEADPH-BT-ANC-BLK',
     name: 'Auriculares Bluetooth con ANC',
     slug: 'auriculares-bluetooth-anc',
@@ -156,7 +155,7 @@ export const products: Product[] = [
     },
   },
   {
-    id: uuidv1(),
+    id: "prod-004",
     sku: 'MONITOR-27-144HZ-IPS',
     name: 'Monitor 27" 144Hz IPS',
     slug: 'monitor-27-144hz-ips',
@@ -187,7 +186,7 @@ export const products: Product[] = [
     },
   },
   {
-    id: uuidv1(),
+    id: "prod-005",
     sku: 'MOUSEPAD-XL-RGB',
     name: 'Alfombrilla gaming XL RGB',
     slug: 'alfombrilla-gaming-xl-rgb',
