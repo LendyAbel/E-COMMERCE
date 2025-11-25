@@ -7,8 +7,8 @@
 
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
-    "module": "nodenext",
-    "target": "esnext",
+    "module": "commonjs",
+    "target": "es6",
     "types": ["node"],
     // For nodejs:
     // "lib": ["esnext"],
@@ -35,11 +35,12 @@
     // Recommended Options
     "strict": true,
     // "jsx": "react-jsx",
-    "verbatimModuleSyntax": true,
-    "isolatedModules": true,
+    // "verbatimModuleSyntax": true,
+    // "isolatedModules": true,
     // "noUncheckedSideEffectImports": true,
     // "moduleDetection": "force",
     "skipLibCheck": true,
+    "esModuleInterop": true
   },
   // Only include source files under src and explicitly exclude configuration files at project root
   "include": ["src/**/*"],
