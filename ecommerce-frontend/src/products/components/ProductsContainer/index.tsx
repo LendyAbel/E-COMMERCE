@@ -3,6 +3,7 @@ import { fetchAllProducts } from '../../services/productServices';
 
 import ProductCard from './ProductCard';
 import type { Product } from '../../productTypes';
+import { Alert, Box, Skeleton } from '@mui/material';
 
 const ProductsContainer = () => {
   const { data, isLoading, isError } = useQuery({
@@ -15,24 +16,35 @@ const ProductsContainer = () => {
 
   if (isLoading) {
     // Poner toda la lógica de loading
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <Skeleton animation='wave' />
+        <Skeleton animation='wave' />
+        <Skeleton animation='wave' />
+      </div>
+    );
   }
 
   if (isError) {
     // Poner toda la lógica de error
-    return <div>Error loading products.</div>;
+    return (
+      <div>
+        <Alert severity='error'>Error loading products</Alert>
+      </div>
+    );
   }
 
   return (
-    <div>
+    <Box component={'section'} display={'grid'} gap={2}>
+
       {products.map((product: Product) => {
         return (
-          <div>
+          <div key={product.id}>
             <ProductCard product={product} />
           </div>
         );
       })}
-    </div>
+    </Box>
   );
 };
 
