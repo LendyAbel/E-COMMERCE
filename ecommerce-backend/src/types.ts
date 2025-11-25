@@ -40,3 +40,5 @@ export interface ProductVariant {
   ean?: string;
   images?: ProductImage[];
 }
+
+export type NewProduct = Omit<Product, 'id'>;
