@@ -112,7 +112,7 @@ const parseBrand = (value: unknown): string => {
 };
 const parseMainCategory = (value: unknown): string => {
   if (!value || !isString(value) || !isProductCategory(value)) {
-    throw new Error('Invalid Main Category: not a string');
+    throw new Error('Invalid Main Category: not a string or wrong category, must be one of: ' + categories.map(cat => cat.slug).join(', '));
   }
   return value;
 };

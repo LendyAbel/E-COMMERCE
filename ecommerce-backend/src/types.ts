@@ -47,4 +47,4 @@ export interface ProductVariant {
   images?: ProductImage[] | undefined;
 }
 
-export type NewProduct = Omit<Product, 'id'| 'inStock'>;
+export type NewProduct = Omit<Product, 'id'>;
