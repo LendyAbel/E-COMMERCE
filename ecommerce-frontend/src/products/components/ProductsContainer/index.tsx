@@ -12,7 +12,6 @@ const ProductsContainer = () => {
     retry: 3,
   });
   const products = data?.data || [];
-  console.log(products);
 
   if (isLoading) {
     // Poner toda la lógica de loading
