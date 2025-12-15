@@ -39,7 +39,7 @@ const NewProductDialog = ({
   };
 
   return (
-    <Dialog open={open}>
+    <Dialog open={open} onClose={onClose}>
       <Box sx={styleDialog}>
         <DialogTitle>Add new product</DialogTitle>
         <DialogContent>

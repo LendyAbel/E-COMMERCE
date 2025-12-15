@@ -17,13 +17,14 @@ const styleAdminPanel = {
 };
 
 const AdminPanel = () => {
-  const [newProduct, setNewProduct] = useState<NewProduct>({
+  const inicialProductValue = {
     sku: '',
     name: '',
     shortDescription: '',
     price: 0,
     vatType: 0,
-  });
+  };
+  const [newProduct, setNewProduct] = useState<NewProduct>(inicialProductValue);
 
   const [open, setOpen] = useState(false);
 
@@ -32,6 +33,7 @@ const AdminPanel = () => {
   };
 
   const handleClose = () => {
+    setNewProduct(inicialProductValue);
     setOpen(false);
   };
 
