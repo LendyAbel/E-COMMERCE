@@ -26,23 +26,20 @@ const SimpleSelect = <T extends OptionValue>({
   allowEmpty = true,
   onChange,
 }: SimpleSelectProps<T>) => {
-  const handleChange = (event: SelectChangeEvent<string>) => {
-    const rawValue = event.target.value as string;
+  const labelId = `${name}-label-id`;
+  const selectId = `${name}-select-id`;
 
-    if (rawValue === '') {
+  const handleChange = (event: SelectChangeEvent<string>) => {
+    const val = event.target.value;
+    if (val === '') {
       onChange(undefined);
       return;
     }
-
-    // Si el value actual es number, parsea a number; si es string, deja string
     const parsedValue: T =
-      typeof value === 'number' ? (Number(rawValue) as T) : (rawValue as T);
+      typeof value === 'number' ? (Number(val) as T) : (val as T);
 
     onChange(parsedValue);
   };
-
-  const labelId = `${name}-label-id`;
-  const selectId = `${name}-select-id`;
 
   return (
     <FormControl>

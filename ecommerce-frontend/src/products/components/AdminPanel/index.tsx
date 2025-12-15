@@ -1,6 +1,8 @@
 import { Box, Button } from '@mui/material';
 import NewProductDialog from './NewProductDialog/NewProductDialog';
 import { useState } from 'react';
+import type { NewProduct } from '../../productTypes';
+import { NewProductContext } from '../../context/productContext';
 
 const styleAdminPanel = {
   height: 50,
@@ -15,33 +17,43 @@ const styleAdminPanel = {
 };
 
 const AdminPanel = () => {
+  const [newProduct, setNewProduct] = useState<NewProduct>({
+    sku: '',
+    name: '',
+    shortDescription: '',
+    price: 0,
+    vatType: 0,
+  });
+
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
     setOpen(true);
   };
-  
+
   const handleClose = () => {
     setOpen(false);
   };
 
   const handleNewProductAccept = () => {
-    console.log('New product accepted');
+    console.log('New product accepted', newProduct);
     setOpen(false);
   };
 
   return (
-    <Box sx={styleAdminPanel}>
-      Admin Panel
-      <Button variant='contained' onClick={handleOpen}>
-        Add New Product
-      </Button>
-      <NewProductDialog
-        open={open}
-        onClose={handleClose}
-        onAccept={handleNewProductAccept}
-      />
-    </Box>
+    <NewProductContext.Provider value={{ newProduct, setNewProduct }}>
+      <Box sx={styleAdminPanel}>
+        Admin Panel
+        <Button variant='contained' onClick={handleOpen}>
+          Add New Product
+        </Button>
+        <NewProductDialog
+          open={open}
+          onClose={handleClose}
+          onAccept={handleNewProductAccept}
+        />
+      </Box>
+    </NewProductContext.Provider>
   );
 };
 

@@ -1,10 +1,8 @@
 import { Box, Input } from '@mui/material';
-import type { NewProduct } from '../../../../productTypes';
+import { useContext } from 'react';
+import { NewProductContext } from '../../../../context/productContext';
 
-interface RequiredFieldsProps {
-  newProduct: NewProduct;
-  setNewProduct: React.Dispatch<React.SetStateAction<NewProduct>>;
-}
+
 
 const styleForm = {
   display: 'flex',
@@ -14,17 +12,20 @@ const styleForm = {
   marginButtom: 2,
 };
 
-const RequiredFields = ({ newProduct, setNewProduct }: RequiredFieldsProps) => {
+const RequiredFields = () => {
+  const context= useContext(NewProductContext);
+  if (!context) {
+    throw new Error(
+      'RequiredFields must be used within NewProductContext.Provider'
+    );
+  }
+  const {newProduct, setNewProduct} = context
+  
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setNewProduct(prev => ({
       ...prev,
-      [name]:
-        name === 'price' || name === 'vat'
-          ? value === ''
-            ? ''
-            : Number(value)
-          : value,
+      [name]: typeof value === 'number' ? Number(value) : value,
     }));
   };
 
@@ -56,8 +57,8 @@ const RequiredFields = ({ newProduct, setNewProduct }: RequiredFieldsProps) => {
         value={newProduct.price || ''}
       />
       <Input
-        name='vat'
-        placeholder='VAT Type'
+        name='vatType'
+        placeholder='Vat Type'
         type='number'
         required
         value={newProduct.vatType || ''}

@@ -1,20 +1,16 @@
 import {
   Box,
-  Chip,
-  FormControl,
   Input,
-  InputLabel,
-  MenuItem,
-  OutlinedInput,
-  Select,
-  type SelectChangeEvent,
+ 
 } from '@mui/material';
 import type {
-  NewProduct,
   ProductCategory,
   ProductStatus,
 } from '../../../../productTypes';
 import SimpleSelect from '../../../UI/Inputs/SimpleSelect';
+import MultipleSelect from '../../../UI/Inputs/MultipleSelect';
+import { useContext } from 'react';
+import { NewProductContext } from '../../../../context/productContext';
 
 const categories: ProductCategory[] = [
   {
@@ -49,10 +45,6 @@ const statusOptions: ProductStatus[] = [
   'published',
 ];
 
-interface OptionalFieldsProps {
-  newProduct: NewProduct;
-  setNewProduct: React.Dispatch<React.SetStateAction<NewProduct>>;
-}
 
 const styleForm = {
   display: 'flex',
@@ -62,15 +54,21 @@ const styleForm = {
   marginButtom: 2,
 };
 
-const OptionalFields = ({ newProduct, setNewProduct }: OptionalFieldsProps) => {
+const OptionalFields = () => {
+  const context = useContext(NewProductContext);
+  if (!context) {
+    throw new Error(
+      'OptionalFields must be used within NewProductContext.Provider'
+    );
+  }
+  const {newProduct, setNewProduct} = context
   // SELECT multiple: otherCategory
-  const handleOtheCategoryChange = (
-    event: SelectChangeEvent<typeof newProduct.otherCategory>
+  const handleOtherCategoryChange = (
+    value: typeof newProduct.otherCategory
   ) => {
-    const { value } = event.target;
     setNewProduct(prev => ({
       ...prev,
-      otherCategory: typeof value === 'string' ? value.split(',') : value,
+      otherCategory: value,
     }));
   };
   // SELECT simple: status
@@ -116,7 +114,7 @@ const OptionalFields = ({ newProduct, setNewProduct }: OptionalFieldsProps) => {
 
   return (
     <Box sx={styleForm} component='div'>
-      {/* otherCategory (array) */}
+
       <SimpleSelect
         label='Main Category'
         name='mainCategory'
@@ -124,31 +122,14 @@ const OptionalFields = ({ newProduct, setNewProduct }: OptionalFieldsProps) => {
         options={categoriesOptions}
         onChange={handleMainCategoryChange}
       />
-      <FormControl>
-        <InputLabel id='categoriesLabelId'>Categories</InputLabel>
-        <Select
-          labelId='categoriesLabelId'
-          id='categoriesSelect'
-          name='otherCategory'
-          multiple
-          value={newProduct.otherCategory ?? []}
-          onChange={handleOtheCategoryChange}
-          input={<OutlinedInput id='categoryLabel' label='Categories' />}
-          renderValue={selected => (
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-              {selected.map(value => (
-                <Chip key={value} label={value} />
-              ))}
-            </Box>
-          )}
-        >
-          {categories.map(category => (
-            <MenuItem key={category.name} value={category.name}>
-              {category.name}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+
+      <MultipleSelect
+        label='Other Categories'
+        name='otherCategories'
+        value={newProduct.otherCategory}
+        options={categoriesOptions}
+        onChange={handleOtherCategoryChange}
+      />
 
       <SimpleSelect
         label='Status'
@@ -157,51 +138,27 @@ const OptionalFields = ({ newProduct, setNewProduct }: OptionalFieldsProps) => {
         options={statusOptions}
         onChange={handleStatusChange}
       />
-      {/* status (ProductStatus | undefined) */}
-      {/* <FormControl>
-        <InputLabel id='statusLabelId'>Status</InputLabel>
-        <Select
-          labelId='statusLabelId'
-          id='statusSelet'
-          name='status'
-          value={newProduct.status ?? ''}
-          input={<OutlinedInput id='categoryLabel' label='Status' />}
-          onChange={handleStatusChange}
-        >
-          <MenuItem value=''>
-            <em>None</em>
-          </MenuItem>
-          {productStatus.map(status => (
-            <MenuItem key={status} value={status}>
-              {status}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl> */}
+
       {/* slug, longDescription, brand, stock */}
       <Box sx={styleForm} component='div' onChange={handleChange}>
         <Input
           name='slug'
           placeholder='Slug'
-          required
           value={newProduct.slug || ''}
         />
         <Input
           name='longDesciption'
           placeholder='Long Description'
-          required
           value={newProduct.longDescription || ''}
         />
         <Input
           name='brand'
           placeholder='Brand'
-          required
           value={newProduct.brand || ''}
         />
         <Input
           name='stock'
           placeholder='Stock'
-          required
           value={newProduct.stock || ''}
         />
       </Box>

@@ -5,7 +5,7 @@ import RequiredFields from './RequiredFields/RequiredFields';
 import { Box, Button, Dialog, DialogContent, DialogTitle } from '@mui/material';
 import { Close } from '@mui/icons-material';
 
-import type { NewProduct } from '../../../productTypes';
+
 import OptionalFields from './OptionalsFields/OptionalsFields';
 
 interface NewProductDialogProps {
@@ -28,7 +28,6 @@ const NewProductDialog = ({
   onAccept,
   onClose,
 }: NewProductDialogProps) => {
-  const [newProduct, setNewProduct] = useState<NewProduct>({} as NewProduct);
   const [optional, setOptional] = useState(false);
 
   const handleOptionalCLick = () => {
@@ -55,19 +54,13 @@ const NewProductDialog = ({
             onSubmit={handleSubmit}
           >
             <Activity mode={!optional ? 'visible' : 'hidden'}>
-              <RequiredFields
-                newProduct={newProduct}
-                setNewProduct={setNewProduct}
-              />
+              <RequiredFields />
               <Button type='submit' variant='contained'>
                 Add
               </Button>
             </Activity>
             <Activity mode={optional ? 'visible' : 'hidden'}>
-              <OptionalFields
-                newProduct={newProduct}
-                setNewProduct={setNewProduct}
-              />
+              <OptionalFields />
             </Activity>
             <Button variant='outlined' onClick={handleOptionalCLick}>
               {!optional ? 'Optional' : 'Back'}
