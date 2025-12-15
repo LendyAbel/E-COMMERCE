@@ -3,6 +3,8 @@ import NewProductDialog from './NewProductDialog/NewProductDialog';
 import { useState } from 'react';
 import type { NewProduct } from '../../productTypes';
 import { NewProductContext } from '../../context/productContext';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { addNewProduct } from '../../services/productServices';
 
 const styleAdminPanel = {
   height: 50,
@@ -28,6 +30,19 @@ const AdminPanel = () => {
 
   const [open, setOpen] = useState(false);
 
+  const queryClient = useQueryClient();
+  const {
+    mutateAsync: newProductMutation,
+    isPending,
+    isError,
+    error,
+  } = useMutation({
+    mutationFn: addNewProduct,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['products'] });
+    },
+  });
+
   const handleOpen = () => {
     setOpen(true);
   };
@@ -37,10 +52,19 @@ const AdminPanel = () => {
     setOpen(false);
   };
 
-  const handleNewProductAccept = () => {
-    console.log('New product accepted', newProduct);
-    setOpen(false);
+  const handleNewProductAccept = async () => {
+    try {
+      await newProductMutation(newProduct);
+      setOpen(false);
+      console.log('New product accepted', newProduct);
+    } catch (error) {
+      console.error(error);
+    }
   };
+
+  if (isPending) console.log('...Adding new product');
+
+  if (isError) console.log({ Error: error.message });
 
   return (
     <NewProductContext.Provider value={{ newProduct, setNewProduct }}>

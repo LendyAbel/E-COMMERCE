@@ -2,8 +2,6 @@ import { Box, Input } from '@mui/material';
 import { useContext } from 'react';
 import { NewProductContext } from '../../../../context/productContext';
 
-
-
 const styleForm = {
   display: 'flex',
   flexDirection: 'column',
@@ -13,19 +11,19 @@ const styleForm = {
 };
 
 const RequiredFields = () => {
-  const context= useContext(NewProductContext);
+  const context = useContext(NewProductContext);
   if (!context) {
     throw new Error(
       'RequiredFields must be used within NewProductContext.Provider'
     );
   }
-  const {newProduct, setNewProduct} = context
-  
+  const { newProduct, setNewProduct } = context;
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setNewProduct(prev => ({
       ...prev,
-      [name]: typeof value === 'number' ? Number(value) : value,
+      [name]: name === 'price' || name === 'vatType' ? Number(value) : value,
     }));
   };
 
