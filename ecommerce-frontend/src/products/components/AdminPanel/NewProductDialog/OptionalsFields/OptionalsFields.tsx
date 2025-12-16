@@ -147,7 +147,7 @@ const OptionalFields = () => {
           value={newProduct.slug || ''}
         />
         <Input
-          name='longDesciption'
+          name='longDescription'
           placeholder='Long Description'
           value={newProduct.longDescription || ''}
         />

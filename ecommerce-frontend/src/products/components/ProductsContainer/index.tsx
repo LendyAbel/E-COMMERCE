@@ -8,10 +8,10 @@ import { Alert, Box, Skeleton } from '@mui/material';
 const ProductsContainer = () => {
   const { data, isLoading, isError } = useQuery({
     queryKey: ['products'],
-    queryFn: () => fetchAllProducts(),
+    queryFn: fetchAllProducts,
     retry: 3,
   });
-  const products = data?.data || [];
+  const products = data ?? [];
 
   if (isLoading) {
     // Poner toda la lógica de loading
@@ -35,7 +35,6 @@ const ProductsContainer = () => {
 
   return (
     <Box component={'section'} display={'grid'} gap={2}>
-
       {products.map((product: Product) => {
         return (
           <div key={product.id}>

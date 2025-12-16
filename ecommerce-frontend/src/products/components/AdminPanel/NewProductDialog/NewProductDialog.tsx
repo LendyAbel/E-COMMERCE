@@ -5,7 +5,6 @@ import RequiredFields from './RequiredFields/RequiredFields';
 import { Box, Button, Dialog, DialogContent, DialogTitle } from '@mui/material';
 import { Close } from '@mui/icons-material';
 
-
 import OptionalFields from './OptionalsFields/OptionalsFields';
 
 interface NewProductDialogProps {
@@ -39,9 +38,9 @@ const NewProductDialog = ({
   };
 
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog aria-labelledby='dialogTittle' open={open} onClose={onClose}>
       <Box sx={styleDialog}>
-        <DialogTitle>Add new product</DialogTitle>
+        <DialogTitle id='dialogTittle'>Add new product</DialogTitle>
         <DialogContent>
           <Box
             sx={{
@@ -62,7 +61,7 @@ const NewProductDialog = ({
             <Activity mode={optional ? 'visible' : 'hidden'}>
               <OptionalFields />
             </Activity>
-            <Button variant='outlined' onClick={handleOptionalCLick}>
+            <Button aria-pressed variant='outlined' onClick={handleOptionalCLick}>
               {!optional ? 'Optional' : 'Back'}
             </Button>
           </Box>

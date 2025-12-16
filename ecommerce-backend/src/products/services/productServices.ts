@@ -1,16 +1,14 @@
 import { products } from '../../data/data';
 import { NewProduct, Product } from '../../types';
 
-const productId = (): string => {
-  return `prod-` + (products.length + 1).toString().padStart(4, '0');
-};
+import { v4 as uuid } from 'uuid';
 
 const getProducts = (): Product[] => {
   return products;
 };
 
 const addProduct = (product: NewProduct): Product => {
-  const id = productId();
+  const id = uuid();
   const newProduct = { id, ...product };
 
   if (newProduct.stock === undefined) {
@@ -24,7 +22,7 @@ const addProduct = (product: NewProduct): Product => {
     newProduct.inStock = false;
   }
 
-  products.push(newProduct);
+  products.unshift(newProduct);
   return newProduct;
 };
 

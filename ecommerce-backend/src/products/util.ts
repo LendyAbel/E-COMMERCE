@@ -30,7 +30,7 @@ const isStringNumberBoolean = (
 
 const isProductCategory = (value: unknown): value is string => {
   if (!isString(value)) return false;
-  return categories.some(category => category.slug === value);
+  return categories.some(category => category.name === value);
 };
 
 const isProductStatus = (value: unknown): value is ProductStatus => {

@@ -7,7 +7,7 @@ const styleForm = {
   flexDirection: 'column',
   gap: 2,
   marginTop: 2,
-  marginButtom: 2,
+  marginBottom: 2,
 };
 
 const RequiredFields = () => {

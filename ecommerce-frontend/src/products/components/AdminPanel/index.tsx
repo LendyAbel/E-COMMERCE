@@ -55,6 +55,7 @@ const AdminPanel = () => {
   const handleNewProductAccept = async () => {
     try {
       await newProductMutation(newProduct);
+      setNewProduct(inicialProductValue)
       setOpen(false);
       console.log('New product accepted', newProduct);
     } catch (error) {
