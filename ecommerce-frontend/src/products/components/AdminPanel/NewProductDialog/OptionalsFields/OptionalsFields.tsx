@@ -1,14 +1,14 @@
+import { Box, Input } from '@mui/material';
 import {
-  Box,
-  Input,
- 
-} from '@mui/material';
-import type {
-  ProductCategory,
-  ProductStatus,
+  PRODUCT_STATUS,
+  type NewProduct,
+  type ProductCategory,
+  type ProductStatus,
 } from '../../../../productTypes';
+
 import SimpleSelect from '../../../UI/Inputs/SimpleSelect';
 import MultipleSelect from '../../../UI/Inputs/MultipleSelect';
+
 import { useContext } from 'react';
 import { NewProductContext } from '../../../../context/productContext';
 
@@ -38,21 +38,8 @@ const categories: ProductCategory[] = [
   },
 ];
 const categoriesOptions = categories.map(cat => cat.name);
-const statusOptions: ProductStatus[] = [
-  'discontinued',
-  'draft',
-  'hidden',
-  'published',
-];
 
-
-const styleForm = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: 2,
-  marginTop: 2,
-  marginButtom: 2,
-};
+const statusOptions: ProductStatus[] = [...PRODUCT_STATUS];
 
 const OptionalFields = () => {
   const context = useContext(NewProductContext);
@@ -61,60 +48,36 @@ const OptionalFields = () => {
       'OptionalFields must be used within NewProductContext.Provider'
     );
   }
-  const {newProduct, setNewProduct} = context
+  const { newProduct, updateField } = context;
   // SELECT multiple: otherCategory
   const handleOtherCategoryChange = (
     value: typeof newProduct.otherCategory
   ) => {
-    setNewProduct(prev => ({
-      ...prev,
-      otherCategory: value,
-    }));
+    updateField('otherCategory', value);
   };
   // SELECT simple: status
   const handleStatusChange = (value: typeof newProduct.status) => {
-    setNewProduct(prev => ({
-      ...prev,
-      status: value,
-    }));
+    updateField('status', value);
   };
   // SELECT simple: mainCategory
   const handleMainCategoryChange = (value: typeof newProduct.mainCategory) => {
-    setNewProduct(prev => ({
-      ...prev,
-      mainCategory: value,
-    }));
+    updateField('mainCategory', value);
   };
   // INPUTS numéricos / string
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    switch (name) {
-      case 'slug':
-      case 'longDescription':
-      case 'brand':
-        setNewProduct(prev => ({
-          ...prev,
-          [name]: value === '' ? undefined : value,
-        }));
-        break;
+    console.log('name', name);
 
-      case 'stock':
-        setNewProduct(prev => ({
-          ...prev,
-          stock: value === '' ? undefined : Number(value),
-        }));
-        break;
-      default:
-        setNewProduct(prev => ({
-          ...prev,
-          [name]: value,
-        }));
+    if (name === 'stock') {
+      console.log('hola');
+      updateField(name, Number(value));
+    } else {
+      updateField(name as keyof NewProduct, value);
     }
   };
 
   return (
-    <Box sx={styleForm} component='div'>
-
+    <Box className='input-container' component='div'>
       <SimpleSelect
         label='Main Category'
         name='mainCategory'
@@ -140,12 +103,8 @@ const OptionalFields = () => {
       />
 
       {/* slug, longDescription, brand, stock */}
-      <Box sx={styleForm} component='div' onChange={handleChange}>
-        <Input
-          name='slug'
-          placeholder='Slug'
-          value={newProduct.slug || ''}
-        />
+      <Box className='input-container' component='div' onChange={handleChange}>
+        <Input name='slug' placeholder='Slug' value={newProduct.slug || ''} />
         <Input
           name='longDescription'
           placeholder='Long Description'

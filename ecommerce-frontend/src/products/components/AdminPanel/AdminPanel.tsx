@@ -1,10 +1,10 @@
 import { Box, Button } from '@mui/material';
 import NewProductDialog from './NewProductDialog/NewProductDialog';
 import { useState } from 'react';
-import type { NewProduct } from '../../productTypes';
 import { NewProductContext } from '../../context/productContext';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { addNewProduct } from '../../services/productServices';
+import { useNewProduct } from '../../hooks/useNewProduct';
 
 const styleAdminPanel = {
   height: 50,
@@ -19,20 +19,14 @@ const styleAdminPanel = {
 };
 
 const AdminPanel = () => {
-  const inicialProductValue = {
-    sku: '',
-    name: '',
-    shortDescription: '',
-    price: 0,
-    vatType: 0,
-  };
-  const [newProduct, setNewProduct] = useState<NewProduct>(inicialProductValue);
+  const { newProduct, setNewProduct, resetNewProduct, updateField } =
+    useNewProduct();
 
   const [open, setOpen] = useState(false);
 
   const queryClient = useQueryClient();
   const {
-    mutateAsync: newProductMutation,
+    mutateAsync: addProductMutation,
     isPending,
     isError,
     error,
@@ -48,14 +42,14 @@ const AdminPanel = () => {
   };
 
   const handleClose = () => {
-    setNewProduct(inicialProductValue);
+    resetNewProduct();
     setOpen(false);
   };
 
   const handleNewProductAccept = async () => {
     try {
-      await newProductMutation(newProduct);
-      setNewProduct(inicialProductValue)
+      await addProductMutation(newProduct);
+      resetNewProduct();
       setOpen(false);
       console.log('New product accepted', newProduct);
     } catch (error) {
@@ -68,9 +62,11 @@ const AdminPanel = () => {
   if (isError) console.log({ Error: error.message });
 
   return (
-    <NewProductContext.Provider value={{ newProduct, setNewProduct }}>
+    <NewProductContext.Provider
+      value={{ newProduct, setNewProduct, resetNewProduct, updateField }}
+    >
       <Box sx={styleAdminPanel}>
-        Admin Panel
+        BIENVENIDO (ADMIN)
         <Button variant='contained' onClick={handleOpen}>
           Add New Product
         </Button>

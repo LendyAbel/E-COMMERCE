@@ -38,7 +38,7 @@ const MultipleSelect = ({
   };
 
   return (
-    <FormControl>
+    <FormControl sx={{width: '100%', margin: 'auto'}}>
       <InputLabel id={labelId}>{label}</InputLabel>
       <Select<string[]>
         labelId={labelId}

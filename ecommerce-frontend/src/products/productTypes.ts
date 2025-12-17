@@ -18,6 +18,13 @@ export interface Product {
   attributes?: Record<string, string | number | boolean> | undefined; // {[key: string]: string | number | boolean}
 }
 
+export const PRODUCT_STATUS = [
+  'draft',
+  'published',
+  'hidden',
+  'discontinued',
+] as const;
+
 export interface ProductCategory {
   id: string;
   name: string;
@@ -30,7 +37,9 @@ export interface ProductImage {
   alt: string;
   isMain?: boolean | undefined;
 }
-export type ProductStatus = 'draft' | 'published' | 'hidden' | 'discontinued';
+
+
+export type ProductStatus = (typeof PRODUCT_STATUS)[number];
 
 export interface ProductVariant {
   id: string;
