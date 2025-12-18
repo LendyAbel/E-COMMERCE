@@ -1,0 +1,30 @@
+.dialog {
+    min-width: 500px;
+    min-height: 300px;
+    padding: 2px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+}
+
+.input-container {
+    width: 100%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.form-buttons {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}

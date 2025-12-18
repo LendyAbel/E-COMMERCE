@@ -2,34 +2,44 @@ export interface Product {
   id: string;
   sku: string;
   name: string;
-  slug: string;
+  slug?: string | undefined;
   shortDescription: string;
-  longDescription: string;
-  brand: string;
-  mainCategory: ProductCategory['name'];
-  otherCategory: Array<ProductCategory['name']>;
+  longDescription?: string | undefined;
+  brand?: string | undefined;
+  mainCategory?: ProductCategory['name'] | undefined;
+  otherCategory?: Array<ProductCategory['name']> | undefined;
   price: number;
   vatType: number;
-  inStock: boolean;
-  stock: number;
-  status: 'draft' | 'published' | 'hidden' | 'discontinued';
-  images: ProductImage[];
-  variants?: ProductVariant[];
-  attributes: Record<string, string | number | boolean>; // {[key: string]: string | number | boolean}
+  inStock?: boolean | undefined;
+  stock?: number | undefined;
+  status?: ProductStatus | undefined;
+  images?: ProductImage[] | undefined;
+  variants?: ProductVariant[] | undefined;
+  attributes?: Record<string, string | number | boolean> | undefined; // {[key: string]: string | number | boolean}
 }
+
+export const PRODUCT_STATUS = [
+  'draft',
+  'published',
+  'hidden',
+  'discontinued',
+] as const;
 
 export interface ProductCategory {
   id: string;
   name: string;
   slug: string;
-  parentSlug?: string;
+  parentSlug?: string | undefined;
 }
 
 export interface ProductImage {
   url: string;
   alt: string;
-  isMain: boolean;
+  isMain?: boolean | undefined;
 }
+
+
+export type ProductStatus = (typeof PRODUCT_STATUS)[number];
 
 export interface ProductVariant {
   id: string;
@@ -37,6 +47,8 @@ export interface ProductVariant {
   attributes: Record<string, string | number | boolean>; // {[key: string]: string | number | boolean}
   price: number;
   stock: number;
-  ean?: string;
-  images?: ProductImage[];
+  ean?: string | undefined;
+  images?: ProductImage[] | undefined;
 }
+
+export type NewProduct = Omit<Product, 'id'>;
