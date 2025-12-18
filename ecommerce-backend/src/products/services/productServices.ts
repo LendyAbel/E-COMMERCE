@@ -13,6 +13,12 @@ const getProducts = (): Product[] => {
   return products;
 };
 
+const getProductById = (id: Product['id']): Product => {
+  const product = products.find(p => p.id === id);
+  if (!product) throw new Error(`Product with id: ${id} not found`);
+  return product;
+};
+
 const addProduct = (product: NewProduct): Product => {
   const id = uuid();
   const productWithId = { id, ...product };
@@ -24,7 +30,7 @@ const addProduct = (product: NewProduct): Product => {
   return newProduct;
 };
 
-const updateProduct = (id: string , productData: NewProduct): Product => {
+const updateProduct = (id: string, productData: NewProduct): Product => {
   const index = products.findIndex(p => p.id === id);
   if (index === -1) throw new Error(`Product with id: ${id} not found`);
 
@@ -36,4 +42,4 @@ const updateProduct = (id: string , productData: NewProduct): Product => {
   return updatedProduct;
 };
 
-export default { getProducts, addProduct, updateProduct };
+export default { getProducts, addProduct, updateProduct, getProductById };
