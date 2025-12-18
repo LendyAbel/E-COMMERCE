@@ -1,6 +1,7 @@
 import { categories } from '../data/data';
 import {
   NewProduct,
+  ProductCategory,
   ProductImage,
   ProductStatus,
   ProductVariant,
@@ -30,7 +31,7 @@ const isStringNumberBoolean = (
 
 const isProductCategory = (value: unknown): value is string => {
   if (!isString(value)) return false;
-  return categories.some(category => category.name === value);
+  return categories.some(category => category.slug === value);
 };
 
 const isProductStatus = (value: unknown): value is ProductStatus => {
@@ -110,9 +111,12 @@ const parseBrand = (value: unknown): string => {
   }
   return value;
 };
-const parseMainCategory = (value: unknown): string => {
+const parseMainCategory = (value: unknown): ProductCategory['slug'] => {
   if (!value || !isString(value) || !isProductCategory(value)) {
-    throw new Error('Invalid Main Category: not a string or wrong category, must be one of: ' + categories.map(cat => cat.slug).join(', '));
+    throw new Error(
+      'Invalid Main Category: not a string or wrong category, must be one of: ' +
+        categories.map(cat => cat.slug).join(', ')
+    );
   }
   return value;
 };
