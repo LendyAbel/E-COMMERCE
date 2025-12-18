@@ -6,8 +6,8 @@ export interface Product {
   shortDescription: string;
   longDescription?: string | undefined;
   brand?: string | undefined;
-  mainCategory?: ProductCategory['name'] | undefined;
-  otherCategory?: Array<ProductCategory['name']> | undefined;
+  mainCategory?: ProductCategory['slug'] | undefined;
+  otherCategory?: Array<ProductCategory['slug']> | undefined;
   price: number;
   vatType: number;
   inStock?: boolean | undefined;
