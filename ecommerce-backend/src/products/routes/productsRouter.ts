@@ -34,7 +34,7 @@ router.put(
       if (!id) {
         return res.status(400).send({ error: 'Missing product id in params' });
       }
-      console.log(req.body)
+
       const newProductData = toNewProduct(req.body);
       const updatedProduct = productService.updateProduct(id, newProductData);
       return res.status(200).send(updatedProduct);

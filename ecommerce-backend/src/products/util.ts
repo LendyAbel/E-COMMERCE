@@ -144,7 +144,10 @@ const parseVatType = (value: unknown): number => {
   return value;
 };
 const parseStock = (value: unknown): number => {
-  if (!value || !isNumber(value)) {
+  if (value === undefined || value === null) {
+    return 0;
+  }
+  if (!isNumber(value)) {
     throw new Error('Invalid Stock: not a number');
   }
   return value;
