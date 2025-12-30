@@ -1,5 +1,6 @@
 import { Box } from '@mui/material';
 import { NavLink } from 'react-router';
+import PanelMenu from './menu/PanelMenu';
 
 const Panel = () => {
   return (
@@ -10,6 +11,7 @@ const Panel = () => {
         <NavLink to='/products'>PRODUCTS</NavLink>
         <NavLink to='/about'>ABOUT</NavLink>
       </div>
+      <PanelMenu />
     </Box>
   );
 };
