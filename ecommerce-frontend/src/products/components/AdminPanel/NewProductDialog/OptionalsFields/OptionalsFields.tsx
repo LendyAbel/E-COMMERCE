@@ -37,7 +37,7 @@ const categories: ProductCategory[] = [
     parentSlug: 'electronica',
   },
 ];
-const categoriesOptions = categories.map(cat => cat.name);
+const categoriesOptions = categories.map(cat => cat.slug);
 
 const statusOptions: ProductStatus[] = [...PRODUCT_STATUS];
 
@@ -49,6 +49,11 @@ const OptionalFields = () => {
     );
   }
   const { newProduct, updateField } = context;
+
+  // SELECT simple: mainCategory
+  const handleMainCategoryChange = (value: typeof newProduct.mainCategory) => {
+    updateField('mainCategory', value);
+  };
   // SELECT multiple: otherCategory
   const handleOtherCategoryChange = (
     value: typeof newProduct.otherCategory
@@ -59,14 +64,9 @@ const OptionalFields = () => {
   const handleStatusChange = (value: typeof newProduct.status) => {
     updateField('status', value);
   };
-  // SELECT simple: mainCategory
-  const handleMainCategoryChange = (value: typeof newProduct.mainCategory) => {
-    updateField('mainCategory', value);
-  };
   // INPUTS numéricos / string
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    console.log('name', name);
 
     if (name === 'stock') {
       console.log('hola');
