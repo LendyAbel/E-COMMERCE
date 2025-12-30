@@ -1,3 +1,18 @@
+.navbar {
+    width: 95%;
+    height: 50px;
+    background-color: #79a7ec;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+.navbar .links{
+    display: flex;
+    gap: 15px;
+}
+
 .dialog {
     min-width: 500px;
     min-height: 300px;
