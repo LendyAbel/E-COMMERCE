@@ -69,7 +69,6 @@ const OptionalFields = () => {
     const { name, value } = event.target;
 
     if (name === 'stock') {
-      console.log('hola');
       updateField(name, Number(value));
     } else {
       updateField(name as keyof NewProduct, value);

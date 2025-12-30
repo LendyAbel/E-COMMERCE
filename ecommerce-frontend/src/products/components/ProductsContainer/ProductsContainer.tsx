@@ -29,6 +29,7 @@ const ProductsContainer = () => {
 
   if (isError) {
     // Poner toda la lógica de error
+    console.error('Error loading products');
     return (
       <div>
         <Alert severity='error'>Error loading products</Alert>
