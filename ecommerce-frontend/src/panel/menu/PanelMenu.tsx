@@ -16,9 +16,9 @@ const PanelMenu = () => {
       </Button>
       {isOpen && (
         <div className='panel-menu'>
-          <Button>Option 1</Button>
-          <Button>Option 2</Button>
-          <Button>Option 3</Button>
+          <Button>account</Button>
+          <Button>orders</Button>
+          <Button>Logout</Button>
         </div>
       )}
     </div>

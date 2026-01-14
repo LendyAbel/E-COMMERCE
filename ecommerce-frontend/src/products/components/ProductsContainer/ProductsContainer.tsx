@@ -64,7 +64,7 @@ const ProductsContainer = () => {
           aria-label='add'
           onClick={isOpenDialog}
         >
-          <Add />
+          <Add /> NEW
         </Fab>
         <Box
           component={'section'}
