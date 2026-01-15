@@ -1,7 +1,7 @@
 import { Box, Input } from '@mui/material';
 import { useContext } from 'react';
-import { NewProductContext } from '../../../../context/productContext';
-import type { NewProduct } from '../../../../productTypes';
+import { NewProductContext } from '../../../context/productContext';
+import type { NewProduct } from '../../../productTypes';
 
 const RequiredFields = () => {
   const context = useContext(NewProductContext);

@@ -4,13 +4,13 @@ import {
   type NewProduct,
   type ProductCategory,
   type ProductStatus,
-} from '../../../../productTypes';
+} from '../../../productTypes';
 
-import SimpleSelect from '../../../UI/Inputs/SimpleSelect';
-import MultipleSelect from '../../../UI/Inputs/MultipleSelect';
+import SimpleSelect from '../../UI/Inputs/SimpleSelect';
+import MultipleSelect from '../../UI/Inputs/MultipleSelect';
 
 import { useContext } from 'react';
-import { NewProductContext } from '../../../../context/productContext';
+import { NewProductContext } from '../../../context/productContext';
 
 const categories: ProductCategory[] = [
   {
@@ -37,7 +37,7 @@ const categories: ProductCategory[] = [
     parentSlug: 'electronica',
   },
 ];
-const categoriesOptions = categories.map(cat => cat.name);
+const categoriesOptions = categories.map(cat => cat.slug);
 
 const statusOptions: ProductStatus[] = [...PRODUCT_STATUS];
 
@@ -49,27 +49,24 @@ const OptionalFields = () => {
     );
   }
   const { newProduct, updateField } = context;
+
+  // SELECT simple: mainCategory
+  const handleMainCategoryChange = (value: string | undefined) => {
+    updateField('mainCategory' as keyof NewProduct, value);
+  };
   // SELECT multiple: otherCategory
-  const handleOtherCategoryChange = (
-    value: typeof newProduct.otherCategory
-  ) => {
-    updateField('otherCategory', value);
+  const handleOtherCategoryChange = (value: string[] | undefined) => {
+    updateField('otherCategory' as keyof NewProduct, value);
   };
   // SELECT simple: status
-  const handleStatusChange = (value: typeof newProduct.status) => {
-    updateField('status', value);
-  };
-  // SELECT simple: mainCategory
-  const handleMainCategoryChange = (value: typeof newProduct.mainCategory) => {
-    updateField('mainCategory', value);
+  const handleStatusChange = (value: ProductStatus | undefined) => {
+    updateField('status' as keyof NewProduct, value);
   };
   // INPUTS numéricos / string
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    console.log('name', name);
 
     if (name === 'stock') {
-      console.log('hola');
       updateField(name, Number(value));
     } else {
       updateField(name as keyof NewProduct, value);
