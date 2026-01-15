@@ -4,13 +4,13 @@ import {
   type NewProduct,
   type ProductCategory,
   type ProductStatus,
-} from '../../../../productTypes';
+} from '../../../productTypes';
 
-import SimpleSelect from '../../../UI/Inputs/SimpleSelect';
-import MultipleSelect from '../../../UI/Inputs/MultipleSelect';
+import SimpleSelect from '../../UI/Inputs/SimpleSelect';
+import MultipleSelect from '../../UI/Inputs/MultipleSelect';
 
 import { useContext } from 'react';
-import { NewProductContext } from '../../../../context/productContext';
+import { NewProductContext } from '../../../context/productContext';
 
 const categories: ProductCategory[] = [
   {
@@ -51,18 +51,16 @@ const OptionalFields = () => {
   const { newProduct, updateField } = context;
 
   // SELECT simple: mainCategory
-  const handleMainCategoryChange = (value: typeof newProduct.mainCategory) => {
-    updateField('mainCategory', value);
+  const handleMainCategoryChange = (value: string | undefined) => {
+    updateField('mainCategory' as keyof NewProduct, value);
   };
   // SELECT multiple: otherCategory
-  const handleOtherCategoryChange = (
-    value: typeof newProduct.otherCategory
-  ) => {
-    updateField('otherCategory', value);
+  const handleOtherCategoryChange = (value: string[] | undefined) => {
+    updateField('otherCategory' as keyof NewProduct, value);
   };
   // SELECT simple: status
-  const handleStatusChange = (value: typeof newProduct.status) => {
-    updateField('status', value);
+  const handleStatusChange = (value: ProductStatus | undefined) => {
+    updateField('status' as keyof NewProduct, value);
   };
   // INPUTS numéricos / string
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
