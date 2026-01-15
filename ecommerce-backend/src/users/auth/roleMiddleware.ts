@@ -1,0 +1,20 @@
+import type { NextFunction, Request, Response } from 'express';
+import { UserRole } from '../types';
+import { throwAppError } from '../../utils/errorMiddleware';
+
+export const requireRole = (allowedRoles: UserRole[]) => {
+  return (req: Request, _res: Response, _next: NextFunction): void => {
+    if (!req.user) {
+      throwAppError('User not authenticated', 401);
+      return;
+    }
+
+    if (!allowedRoles.includes(req.user.role)) {
+      throwAppError('Forbidden: insufficient permissions', 403);
+    }
+
+    _next();
+  };
+};
+
+

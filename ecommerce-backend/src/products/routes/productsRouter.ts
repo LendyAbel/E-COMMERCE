@@ -1,10 +1,16 @@
-import express, { type NextFunction, type Request, type Response } from 'express';
+import express, {
+  type NextFunction,
+  type Request,
+  type Response,
+} from 'express';
 
 import { Product } from '../types';
 
 import productService from '../services/productServices';
 import { toNewProduct } from '../util';
 import { throwAppError } from '../../utils/errorMiddleware';
+import { authenticateMiddleware } from '../../users/auth/authenticateMiddleware';
+import { requireRole } from '../../users/auth/roleMiddleware';
 
 const router = express.Router();
 
@@ -41,6 +47,8 @@ router.get(
 // POST /api/products
 router.post(
   '/',
+  authenticateMiddleware,
+  requireRole(['admin']),
   async (req: Request, res: Response<Product>, next: NextFunction) => {
     try {
       const newProductData = toNewProduct(req.body);
@@ -56,6 +64,8 @@ router.post(
 // PUT /api/products/:id
 router.put(
   '/:id',
+  authenticateMiddleware,
+  requireRole(['admin']),
   async (req: Request, res: Response<Product>, next: NextFunction) => {
     try {
       const id = req.params.id;

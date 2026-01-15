@@ -43,6 +43,6 @@
     "esModuleInterop": true
   },
   // Only include source files under src and explicitly exclude configuration files at project root
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "src"],
   "exclude": ["eslint.config.mts", "node_modules", "build", "dist"]
 }
