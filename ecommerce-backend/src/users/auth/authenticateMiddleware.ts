@@ -11,7 +11,7 @@ export const authenticateMiddleware = (
   next: NextFunction
 ): void => {
   const authHeader = req.header('Authorization');
-
+  console.log('Auth Header:', authHeader);
   if (!authHeader || !authHeader.startsWith('Bearer')) {
     throwAppError('Authorization header missing or malformed', 401);
     return;
@@ -29,8 +29,6 @@ export const authenticateMiddleware = (
     };
     next();
   } catch (error) {
-    console.error('Token verification failed:', error);
-    throwAppError('Invalid or expired token', 401);
-    return;
+    next(error);
   }
 };

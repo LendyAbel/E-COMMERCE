@@ -4,17 +4,19 @@ import { throwAppError } from '../../utils/errorMiddleware';
 
 export const requireRole = (allowedRoles: UserRole[]) => {
   return (req: Request, _res: Response, _next: NextFunction): void => {
-    if (!req.user) {
-      throwAppError('User not authenticated', 401);
-      return;
-    }
+    try {
+      if (!req.user) {
+        throwAppError('User not authenticated', 401);
+        return;
+      }
 
-    if (!allowedRoles.includes(req.user.role)) {
-      throwAppError('Forbidden: insufficient permissions', 403);
-    }
+      if (!allowedRoles.includes(req.user.role)) {
+        throwAppError('Forbidden: insufficient permissions', 403);
+      }
 
-    _next();
+      _next();
+    } catch (error) {
+      _next(error);
+    }
   };
 };
-
-

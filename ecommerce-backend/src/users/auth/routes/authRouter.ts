@@ -5,7 +5,6 @@ import userService from '../../services/userService';
 
 import { throwAppError } from '../../../utils/errorMiddleware';
 
-
 const router = express.Router();
 
 // POST /api/auth/register
@@ -24,7 +23,7 @@ router.post(
         return;
       }
 
-      if (role !== 'admin' && role !== 'user') {
+      if (role !== undefined && role !== 'admin' && role !== 'user') {
         throwAppError('Invalid role', 400);
         return;
       }
