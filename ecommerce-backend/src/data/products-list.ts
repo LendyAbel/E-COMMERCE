@@ -1,25 +1,25 @@
-import type { Product, ProductCategory } from '../types.ts';
+import type { Product, ProductCategory } from '../products/types.js';
 
 export const categories: ProductCategory[] = [
   {
-    id: "cat-001",
+    id: 'cat-001',
     name: 'Electrónica',
     slug: 'electronica',
   },
   {
-    id: "cat-002",
+    id: 'cat-002',
     name: 'Periféricos',
     slug: 'perifericos',
     parentSlug: 'electronica',
   },
   {
-    id: "cat-003",
+    id: 'cat-003',
     name: 'Audio',
     slug: 'audio',
     parentSlug: 'electronica',
   },
   {
-    id: "cat-004",
+    id: 'cat-004',
     name: 'Gaming',
     slug: 'gaming',
     parentSlug: 'electronica',
@@ -28,7 +28,7 @@ export const categories: ProductCategory[] = [
 
 export const products: Product[] = [
   {
-    id: "prod-001",
+    id: 'prod-001',
     sku: 'MOUSE-LOGI-G502-BLK',
     name: 'Ratón gaming Logitech G502',
     slug: 'raton-gaming-logitech-g502',
@@ -79,11 +79,12 @@ export const products: Product[] = [
     },
   },
   {
-    id: "prod-002",
+    id: 'prod-002',
     sku: 'KEYB-MECH-RGB-TKL',
     name: 'Teclado mecánico TKL RGB',
     slug: 'teclado-mecanico-tkl-rgb',
-    shortDescription: 'Teclado mecánico TKL con switches rojos y retroiluminación RGB.',
+    shortDescription:
+      'Teclado mecánico TKL con switches rojos y retroiluminación RGB.',
     longDescription:
       'Teclado mecánico tenkeyless con switches lineales rojos, estructura de aluminio, keycaps PBT y retroiluminación RGB direccionable.',
     brand: 'RedDragon',
@@ -125,11 +126,12 @@ export const products: Product[] = [
     },
   },
   {
-    id: "prod-003",
+    id: 'prod-003',
     sku: 'HEADPH-BT-ANC-BLK',
     name: 'Auriculares Bluetooth con ANC',
     slug: 'auriculares-bluetooth-anc',
-    shortDescription: 'Auriculares over-ear Bluetooth con cancelación de ruido activa.',
+    shortDescription:
+      'Auriculares over-ear Bluetooth con cancelación de ruido activa.',
     longDescription:
       'Auriculares inalámbricos over-ear con cancelación de ruido activa (ANC), hasta 30 horas de batería y carga rápida USB-C.',
     brand: 'Sony',
@@ -155,7 +157,7 @@ export const products: Product[] = [
     },
   },
   {
-    id: "prod-004",
+    id: 'prod-004',
     sku: 'MONITOR-27-144HZ-IPS',
     name: 'Monitor 27" 144Hz IPS',
     slug: 'monitor-27-144hz-ips',
@@ -186,7 +188,7 @@ export const products: Product[] = [
     },
   },
   {
-    id: "prod-005",
+    id: 'prod-005',
     sku: 'MOUSEPAD-XL-RGB',
     name: 'Alfombrilla gaming XL RGB',
     slug: 'alfombrilla-gaming-xl-rgb',

@@ -1,5 +1,5 @@
-import { products } from '../../data/data';
-import { NewProduct, Product } from '../../types';
+import { products } from '../../data/products-list';
+import { NewProduct, Product } from '../types';
 
 import { v4 as uuid } from 'uuid';
 
