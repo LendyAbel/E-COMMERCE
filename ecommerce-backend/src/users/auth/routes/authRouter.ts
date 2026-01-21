@@ -5,7 +5,6 @@ import userService from '../../services/userService';
 
 import { throwAppError } from '../../../utils/errorMiddleware';
 
-
 const router = express.Router();
 
 // POST /api/auth/register
@@ -14,7 +13,7 @@ router.post(
   async (
     req: Request<unknown, unknown, RegisterBody>,
     res: Response<AuthResponse>,
-    next: NextFunction
+    next: NextFunction,
   ) => {
     try {
       const { email, password, role = 'user' } = req.body;
@@ -24,7 +23,7 @@ router.post(
         return;
       }
 
-      if (role !== 'admin' && role !== 'user') {
+      if (role !== undefined && role !== 'admin' && role !== 'user') {
         throwAppError('Invalid role', 400);
         return;
       }
@@ -46,7 +45,7 @@ router.post(
       console.error('Error during registration:', error);
       next(error);
     }
-  }
+  },
 );
 
 // POST /api/auth/login
@@ -55,7 +54,7 @@ router.post(
   async (
     req: Request<unknown, unknown, LoginBody>,
     res: Response<AuthResponse>,
-    next: NextFunction
+    next: NextFunction,
   ) => {
     try {
       const { email, password } = req.body;
@@ -72,7 +71,7 @@ router.post(
 
       const isValidPassword = await comparePassword(
         password,
-        user.passwordHash
+        user.passwordHash,
       );
       if (!isValidPassword) {
         throwAppError('Invalid password', 401);
@@ -89,7 +88,7 @@ router.post(
       console.error('Error during login:', error);
       next(error);
     }
-  }
+  },
 );
 
 export default router;
