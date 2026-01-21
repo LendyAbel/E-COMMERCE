@@ -28,6 +28,11 @@ const ProductsContainer = () => {
     updateField,
   } = useNewProductDialog();
 
+  const user = JSON.parse(
+    localStorage.getItem(import.meta.env.VITE_USER_KEY) || 'null',
+  );
+
+
   if (isLoading) {
     // Poner toda la lógica de loading
     return (
@@ -57,15 +62,18 @@ const ProductsContainer = () => {
       value={{ newProduct, setNewProduct, resetNewProduct, updateField }}
     >
       <div style={{ position: 'relative' }}>
-        <Fab
-          sx={{ position: 'absolute' }}
-          className='add-product-button'
-          color='primary'
-          aria-label='add'
-          onClick={isOpenDialog}
-        >
-          <Add /> NEW
-        </Fab>
+        {user?.role === 'admin' && (
+          <Fab
+            sx={{ position: 'absolute' }}
+            className='add-product-button'
+            color='primary'
+            aria-label='add'
+            onClick={isOpenDialog}
+          >
+            <Add /> NEW
+          </Fab>
+        )}
+
         <Box
           component={'section'}
           display={'grid'}

@@ -1,24 +1,44 @@
 import { Menu } from '@mui/icons-material';
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { useState } from 'react';
+import { useAuthContext } from '../../auth/hooks/useAuthContext';
+import { NavLink } from 'react-router';
 
 const PanelMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const { user, isAuthenticated, logout } = useAuthContext();
 
   const handleMenuToglle = () => {
     setIsOpen(!isOpen);
   };
 
   return (
-    <div className='navbar-menu'>
-      <Button onClick={handleMenuToglle}>
+    <div className='navbar-menu' onClick={handleMenuToglle}>
+      <Button>
         <Menu />
       </Button>
       {isOpen && (
         <div className='panel-menu'>
-          <Button>account</Button>
-          <Button>orders</Button>
-          <Button>Logout</Button>
+          {isAuthenticated ? (
+            <>
+              <Typography color={'primary'} sx={{ p: 1 }}>
+                {user?.email}
+              </Typography>
+              <Button>account</Button>
+              <Button>orders</Button>
+              <Button onClick={logout}>Logout</Button>
+            </>
+          ) : (
+            <>
+              <Button component={NavLink} to='/login'>
+                Login
+              </Button>
+              <Button component={NavLink} to='/register'>
+                Register
+              </Button>
+            </>
+          )}
         </div>
       )}
     </div>
