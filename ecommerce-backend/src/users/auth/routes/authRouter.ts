@@ -13,7 +13,7 @@ router.post(
   async (
     req: Request<unknown, unknown, RegisterBody>,
     res: Response<AuthResponse>,
-    next: NextFunction
+    next: NextFunction,
   ) => {
     try {
       const { email, password, role = 'user' } = req.body;
@@ -45,7 +45,7 @@ router.post(
       console.error('Error during registration:', error);
       next(error);
     }
-  }
+  },
 );
 
 // POST /api/auth/login
@@ -54,7 +54,7 @@ router.post(
   async (
     req: Request<unknown, unknown, LoginBody>,
     res: Response<AuthResponse>,
-    next: NextFunction
+    next: NextFunction,
   ) => {
     try {
       const { email, password } = req.body;
@@ -71,7 +71,7 @@ router.post(
 
       const isValidPassword = await comparePassword(
         password,
-        user.passwordHash
+        user.passwordHash,
       );
       if (!isValidPassword) {
         throwAppError('Invalid password', 401);
@@ -88,7 +88,7 @@ router.post(
       console.error('Error during login:', error);
       next(error);
     }
-  }
+  },
 );
 
 export default router;

@@ -8,10 +8,9 @@ const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-me';
 export const authenticateMiddleware = (
   req: Request,
   _res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): void => {
   const authHeader = req.header('Authorization');
-  console.log('Auth Header:', authHeader);
   if (!authHeader || !authHeader.startsWith('Bearer')) {
     throwAppError('Authorization header missing or malformed', 401);
     return;
