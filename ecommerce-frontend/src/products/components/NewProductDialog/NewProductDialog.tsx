@@ -1,9 +1,9 @@
 import RequiredFields from './RequiredFields/RequiredFields';
 import OptionalFields from './OptionalsFields/OptionalsFields';
-import ShowHide from '../../UI/ShowHide';
 
 import { Box, Button, Dialog, DialogContent, DialogTitle } from '@mui/material';
 import { Close } from '@mui/icons-material';
+import ShowHide from '../UI/ShowHide';
 
 interface NewProductDialogProps {
   open: boolean;

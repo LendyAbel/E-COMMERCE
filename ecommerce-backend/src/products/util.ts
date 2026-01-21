@@ -1,11 +1,11 @@
-import { categories } from '../data/data';
+import { categories } from '../data/products-list';
 import {
   NewProduct,
   ProductCategory,
   ProductImage,
   ProductStatus,
   ProductVariant,
-} from '../types';
+} from './types';
 
 // const assertNever = (value: never): never => {
 //   throw new Error(`Unhandled discriminated union member: ${JSON.stringify(value)}`);

@@ -1,69 +1,86 @@
-import express, { Request, Response } from 'express';
+import express, {
+  type NextFunction,
+  type Request,
+  type Response,
+} from 'express';
 
-import { Product } from '../../types';
+import { Product } from '../types';
 
 import productService from '../services/productServices';
 import { toNewProduct } from '../util';
+import { throwAppError } from '../../utils/errorMiddleware';
+import { authenticateMiddleware } from '../../users/auth/authenticateMiddleware';
+import { requireRole } from '../../users/auth/roleMiddleware';
 
 const router = express.Router();
 
-router.get('/', (_req, res: Response<Product[]>) => {
-  res.send(productService.getProducts());
+// GET /api/products
+
+router.get('/', async (_req, res: Response<Product[]>, next: NextFunction) => {
+  try {
+    res.send(productService.getProducts());
+  } catch (error) {
+    console.error('Error getting products:', error);
+    next(error);
+  }
 });
 
+// GET /api/products/:id
 router.get(
   '/:id',
-  (req: Request, res: Response<Product | { error: string }>) => {
+  async (req: Request, res: Response<Product>, next: NextFunction) => {
     try {
       const id = req.params.id;
       if (!id) {
-        return res.status(400).send({ error: 'Missing product id in params' });
+        throwAppError('Missing product id in params', 400);
+        return;
       }
       const product = productService.getProductById(id);
-      return res.status(200).send(product);
+      res.status(200).send(product);
     } catch (error) {
-      let errorMessage = 'Something went wrong.';
-      if (error instanceof Error) {
-        errorMessage += 'Error: ' + error.message;
-      }
-      return res.status(400).send({ error: errorMessage });
+      console.error('Error getting product by id:', error);
+      next(error);
     }
   }
 );
 
-router.post('/', (req: Request, res: Response<Product | { error: string }>) => {
-  try {
-    const newProductData = toNewProduct(req.body);
-    const newProduct = productService.addProduct(newProductData);
-    return res.status(201).send(newProduct);
-  } catch (error: unknown) {
-    let errorMessage = 'Something went wrong.';
-    if (error instanceof Error) {
-      errorMessage += 'Error: ' + error.message;
+// POST /api/products
+router.post(
+  '/',
+  authenticateMiddleware,
+  requireRole(['admin']),
+  async (req: Request, res: Response<Product>, next: NextFunction) => {
+    try {
+      const newProductData = toNewProduct(req.body);
+      const newProduct = productService.addProduct(newProductData);
+      res.status(201).send(newProduct);
+    } catch (error: unknown) {
+      console.error('Error adding new product:', error);
+      next(error);
     }
-    return res.status(400).send({ error: errorMessage });
   }
-});
+);
 
+// PUT /api/products/:id
 router.put(
   '/:id',
-  (req: Request, res: Response<Product | { error: string }>) => {
+  authenticateMiddleware,
+  requireRole(['admin']),
+  async (req: Request, res: Response<Product>, next: NextFunction) => {
     try {
       const id = req.params.id;
 
       if (!id) {
-        return res.status(400).send({ error: 'Missing product id in params' });
+        throwAppError('Missing product id in params', 400);
+        return;
       }
 
       const newProductData = toNewProduct(req.body);
       const updatedProduct = productService.updateProduct(id, newProductData);
-      return res.status(200).send(updatedProduct);
+      res.status(200).send(updatedProduct);
     } catch (error) {
-      let errorMessage = 'Something went wrong.';
-      if (error instanceof Error) {
-        errorMessage += 'Error: ' + error.message;
-      }
-      return res.status(400).send({ error: errorMessage });
+      console.error('Error updating product:', error);
+      next(error);
     }
   }
 );
