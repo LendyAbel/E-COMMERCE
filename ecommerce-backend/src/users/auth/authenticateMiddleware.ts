@@ -3,7 +3,10 @@ import type { JwtPayload } from '../util';
 import type { NextFunction, Request, Response } from 'express';
 import { throwAppError } from '../../utils/errorMiddleware';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-me';
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  throw new Error('JWT_SECRET environment variable is not defined');
+}
 
 export const authenticateMiddleware = (
   req: Request,
