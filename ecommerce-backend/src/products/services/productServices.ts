@@ -1,7 +1,8 @@
 import { products } from '../../data/products-list';
-import { NewProduct, Product } from '../types';
+import { Product } from '../types';
 
 import { v4 as uuid } from 'uuid';
+import { NewProductValidator } from '../validators/newProductValidator';
 
 // Aux Function to check stock
 const parseStock = (product: Product): Product => {
@@ -19,7 +20,8 @@ const getProductById = (id: Product['id']): Product => {
   return product;
 };
 
-const addProduct = (product: NewProduct): Product => {
+const addProduct = (data: unknown): Product => {
+  const product = NewProductValidator.validate(data);
   const id = uuid();
   const productWithId = { id, ...product };
   const productWithStock = parseStock(productWithId);
@@ -30,11 +32,13 @@ const addProduct = (product: NewProduct): Product => {
   return newProduct;
 };
 
-const updateProduct = (id: string, productData: NewProduct): Product => {
+const updateProduct = (id: string, data: unknown): Product => {
+  const product = NewProductValidator.validate(data);
+
   const index = products.findIndex(p => p.id === id);
   if (index === -1) throw new Error(`Product with id: ${id} not found`);
 
-  const mergedProduct: Product = { ...products[index], ...productData, id };
+  const mergedProduct: Product = { ...products[index], ...product, id };
   const updatedProduct = parseStock(mergedProduct);
 
   products[index] = updatedProduct;
