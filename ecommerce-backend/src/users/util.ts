@@ -6,6 +6,9 @@ export const validJtwSecret = (): string => {
   const JWT_SECRET = process.env.JWT_SECRET;
   if (!JWT_SECRET) {
     throw new Error('JWT_SECRET environment variable is not defined');
+    throw new Error(
+      'JWT_SECRET environment variable is not defined. Please check your .env file.',
+    );
   }
   return JWT_SECRET;
 };
