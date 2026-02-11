@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchAllProducts } from '../../services/productServices';
-import { NewProductContext } from '../../context/productContext';
+import { NewProductContext } from '../../context/newProductContext';
 import { useNewProductDialog } from '../../hooks/useNewProductDialog';
 import { useAuthContext } from '../../../auth/hooks/useAuthContext';
 
@@ -34,7 +34,7 @@ const ProductsContainer = () => {
   // const user = JSON.parse(
   //   localStorage.getItem(import.meta.env.VITE_USER_KEY) || 'null',
   // );
-  const {user} =useAuthContext();
+  const { user } = useAuthContext();
 
   if (isLoading) {
     // Poner toda la lógica de loading

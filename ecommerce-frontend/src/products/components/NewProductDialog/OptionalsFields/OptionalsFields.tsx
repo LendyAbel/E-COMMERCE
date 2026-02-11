@@ -2,7 +2,7 @@ import { Box, Input } from '@mui/material';
 import {
   PRODUCT_STATUS,
   type NewProduct,
-  type ProductCategory,
+  // type ProductCategory,
   type ProductStatus,
 } from '../../../productTypes';
 
@@ -10,34 +10,35 @@ import SimpleSelect from '../../UI/Inputs/SimpleSelect';
 import MultipleSelect from '../../UI/Inputs/MultipleSelect';
 
 import { useContext } from 'react';
-import { NewProductContext } from '../../../context/productContext';
+import { NewProductContext } from '../../../context/newProductContext';
+import { useQuery } from '@tanstack/react-query';
+import { fetchAllCategories } from '../../../services/categoryServices';
 
-const categories: ProductCategory[] = [
-  {
-    id: 'cat-001',
-    name: 'Electrónica',
-    slug: 'electronica',
-  },
-  {
-    id: 'cat-002',
-    name: 'Periféricos',
-    slug: 'perifericos',
-    parentSlug: 'electronica',
-  },
-  {
-    id: 'cat-003',
-    name: 'Audio',
-    slug: 'audio',
-    parentSlug: 'electronica',
-  },
-  {
-    id: 'cat-004',
-    name: 'Gaming',
-    slug: 'gaming',
-    parentSlug: 'electronica',
-  },
-];
-const categoriesOptions = categories.map(cat => cat.slug);
+// const categories: ProductCategory[] = [
+//   {
+//     id: 'cat-001',
+//     name: 'Electrónica',
+//     slug: 'electronica',
+//   },
+//   {
+//     id: 'cat-002',
+//     name: 'Periféricos',
+//     slug: 'perifericos',
+//     parentSlug: 'electronica',
+//   },
+//   {
+//     id: 'cat-003',
+//     name: 'Audio',
+//     slug: 'audio',
+//     parentSlug: 'electronica',
+//   },
+//   {
+//     id: 'cat-004',
+//     name: 'Gaming',
+//     slug: 'gaming',
+//     parentSlug: 'electronica',
+//   },
+// ];
 
 const statusOptions: ProductStatus[] = [...PRODUCT_STATUS];
 
@@ -45,10 +46,19 @@ const OptionalFields = () => {
   const context = useContext(NewProductContext);
   if (!context) {
     throw new Error(
-      'OptionalFields must be used within NewProductContext.Provider'
+      'OptionalFields must be used within NewProductContext.Provider',
     );
   }
   const { newProduct, updateField } = context;
+
+  const { data } = useQuery({
+    queryKey: ['categories'],
+    queryFn: fetchAllCategories,
+    retry: 3,
+  });
+  const categories = data ?? [];
+
+  const categoriesOptions = categories.map(cat => cat.slug);
 
   // SELECT simple: mainCategory
   const handleMainCategoryChange = (value: string | undefined) => {

@@ -1,13 +1,13 @@
 import { Box, Input } from '@mui/material';
 import { useContext } from 'react';
-import { NewProductContext } from '../../../context/productContext';
+import { NewProductContext } from '../../../context/newProductContext';
 import type { NewProduct } from '../../../productTypes';
 
 const RequiredFields = () => {
   const context = useContext(NewProductContext);
   if (!context) {
     throw new Error(
-      'RequiredFields must be used within NewProductContext.Provider'
+      'RequiredFields must be used within NewProductContext.Provider',
     );
   }
   const { newProduct, updateField } = context;
