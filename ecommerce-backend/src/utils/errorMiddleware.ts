@@ -4,7 +4,7 @@ export interface AppError extends Error {
   statusCode?: number;
 }
 
-export const throwAppError = (message: string, statusCode: number): never => {
+export function throwAppError(message: string, statusCode: number): never {
   const error = new Error(message) as AppError;
   error.statusCode = statusCode;
   throw error;

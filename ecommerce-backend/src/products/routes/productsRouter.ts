@@ -8,7 +8,6 @@ import { Product } from '../types';
 
 import productService from '../services/productServices';
 import { toNewProduct } from '../util';
-import { throwAppError } from '../../utils/errorMiddleware';
 import { authenticateMiddleware } from '../../users/auth/authenticateMiddleware';
 import { requireRole } from '../../users/auth/roleMiddleware';
 
@@ -30,18 +29,14 @@ router.get(
   '/:id',
   async (req: Request, res: Response<Product>, next: NextFunction) => {
     try {
-      const id = req.params.id;
-      if (!id) {
-        throwAppError('Missing product id in params', 400);
-        return;
-      }
+      const id = req.params.id!;
       const product = productService.getProductById(id);
       res.status(200).send(product);
     } catch (error) {
       console.error('Error getting product by id:', error);
       next(error);
     }
-  }
+  },
 );
 
 // POST /api/products
@@ -58,7 +53,7 @@ router.post(
       console.error('Error adding new product:', error);
       next(error);
     }
-  }
+  },
 );
 
 // PUT /api/products/:id
@@ -68,13 +63,7 @@ router.put(
   requireRole(['admin']),
   async (req: Request, res: Response<Product>, next: NextFunction) => {
     try {
-      const id = req.params.id;
-
-      if (!id) {
-        throwAppError('Missing product id in params', 400);
-        return;
-      }
-
+      const id = req.params.id!;
       const newProductData = toNewProduct(req.body);
       const updatedProduct = productService.updateProduct(id, newProductData);
       res.status(200).send(updatedProduct);
@@ -82,7 +71,7 @@ router.put(
       console.error('Error updating product:', error);
       next(error);
     }
-  }
+  },
 );
 
 export default router;

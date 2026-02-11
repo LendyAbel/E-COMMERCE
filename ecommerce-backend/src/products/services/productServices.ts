@@ -3,6 +3,7 @@ import { Product } from '../types';
 
 import { v4 as uuid } from 'uuid';
 import { NewProductValidator } from '../validators/newProductValidator';
+import { throwAppError } from '../../utils/errorMiddleware';
 
 // Aux Function to check stock
 const parseStock = (product: Product): Product => {
@@ -16,7 +17,10 @@ const getProducts = (): Product[] => {
 
 const getProductById = (id: Product['id']): Product => {
   const product = products.find(p => p.id === id);
-  if (!product) throw new Error(`Product with id: ${id} not found`);
+
+  if (!product) {
+    throwAppError(`Product with id: ${id} not found`, 404);
+  }
   return product;
 };
 
@@ -36,7 +40,7 @@ const updateProduct = (id: string, data: unknown): Product => {
   const product = NewProductValidator.validate(data);
 
   const index = products.findIndex(p => p.id === id);
-  if (index === -1) throw new Error(`Product with id: ${id} not found`);
+  if (index === -1) throwAppError(`Product with id: ${id} not found`, 404);
 
   const mergedProduct: Product = { ...products[index], ...product, id };
   const updatedProduct = parseStock(mergedProduct);
