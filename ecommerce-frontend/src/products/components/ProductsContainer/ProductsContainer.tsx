@@ -1,13 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchAllProducts } from '../../services/productServices';
+import { NewProductContext } from '../../context/productContext';
+import { useNewProductDialog } from '../../hooks/useNewProductDialog';
+import { useAuthContext } from '../../../auth/hooks/useAuthContext';
 
-import ProductCard from './ProductCard/ProductCard';
 import type { Product } from '../../productTypes';
+
 import { Alert, Box, Fab, Skeleton } from '@mui/material';
 import { Add } from '@mui/icons-material';
+
 import NewProductDialog from '../NewProductDialog/NewProductDialog';
-import { useNewProductDialog } from '../../hooks/useNewProductDialog';
-import { NewProductContext } from '../../context/productContext';
+import ProductCard from './ProductCard/ProductCard';
 
 const ProductsContainer = () => {
   const { data, isLoading, isError } = useQuery({
@@ -28,10 +31,10 @@ const ProductsContainer = () => {
     updateField,
   } = useNewProductDialog();
 
-  const user = JSON.parse(
-    localStorage.getItem(import.meta.env.VITE_USER_KEY) || 'null',
-  );
-
+  // const user = JSON.parse(
+  //   localStorage.getItem(import.meta.env.VITE_USER_KEY) || 'null',
+  // );
+  const {user} =useAuthContext();
 
   if (isLoading) {
     // Poner toda la lógica de loading
