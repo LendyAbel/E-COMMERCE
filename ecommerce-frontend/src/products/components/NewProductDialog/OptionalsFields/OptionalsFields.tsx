@@ -2,7 +2,6 @@ import { Box, Input } from '@mui/material';
 import {
   PRODUCT_STATUS,
   type NewProduct,
-  // type ProductCategory,
   type ProductStatus,
 } from '../../../productTypes';
 
@@ -14,35 +13,8 @@ import { NewProductContext } from '../../../context/newProductContext';
 import { useQuery } from '@tanstack/react-query';
 import { fetchAllCategories } from '../../../services/categoryServices';
 
-// const categories: ProductCategory[] = [
-//   {
-//     id: 'cat-001',
-//     name: 'Electrónica',
-//     slug: 'electronica',
-//   },
-//   {
-//     id: 'cat-002',
-//     name: 'Periféricos',
-//     slug: 'perifericos',
-//     parentSlug: 'electronica',
-//   },
-//   {
-//     id: 'cat-003',
-//     name: 'Audio',
-//     slug: 'audio',
-//     parentSlug: 'electronica',
-//   },
-//   {
-//     id: 'cat-004',
-//     name: 'Gaming',
-//     slug: 'gaming',
-//     parentSlug: 'electronica',
-//   },
-// ];
-
-const statusOptions: ProductStatus[] = [...PRODUCT_STATUS];
-
 const OptionalFields = () => {
+  const statusOptions: ProductStatus[] = [...PRODUCT_STATUS];
   const context = useContext(NewProductContext);
   if (!context) {
     throw new Error(
