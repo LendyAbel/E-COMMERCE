@@ -1,7 +1,7 @@
 import { Alert, Box, Button, Input, Typography } from '@mui/material';
 import { useLogin } from '../auth/hooks/useAuth';
 import { useNavigate } from 'react-router';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const Login = () => {
   const [email, setEmail] = useState('');

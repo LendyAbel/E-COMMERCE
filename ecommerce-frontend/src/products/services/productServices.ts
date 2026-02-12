@@ -3,8 +3,6 @@ import type { NewProduct, Product } from '../productTypes';
 
 const API_URL = '/api/products';
 
-const token = localStorage.getItem(import.meta.env.VITE_TOKEN_KEY);
-
 export const fetchAllProducts = async (): Promise<Product[]> => {
   try {
     const res: AxiosResponse<Product[]> = await axios.get(API_URL);
@@ -19,6 +17,7 @@ export const addNewProduct = async (
   newProduct: NewProduct,
 ): Promise<Product> => {
   try {
+    const token = localStorage.getItem(import.meta.env.VITE_TOKEN_KEY);
     const res: AxiosResponse<Product> = await axios.post(API_URL, newProduct, {
       headers: token
         ? {

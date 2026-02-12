@@ -63,11 +63,14 @@ router.post(
       const { email, password } = req.body;
       if (!email || !password) {
         throwAppError('Email and password are required', 400);
+        return
       }
 
       const user = userService.getUserByEmail(email);
       if (!user) {
         throwAppError('Invalid email', 401);
+        return;
+
       }
 
       const isValidPassword = await comparePassword(
@@ -76,6 +79,8 @@ router.post(
       );
       if (!isValidPassword) {
         throwAppError('Invalid password', 401);
+        return;
+
       }
 
       const token = signToken(user);

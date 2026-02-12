@@ -1,6 +1,6 @@
 import { Alert, Box, Button, Input, Typography } from '@mui/material';
 import { useRegister } from '../auth/hooks/useAuth';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
 const Register = () => {
