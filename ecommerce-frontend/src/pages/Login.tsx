@@ -2,24 +2,32 @@ import { Alert, Box, Button, Input, Typography } from '@mui/material';
 import { useLogin } from '../auth/hooks/useAuth';
 import { useNavigate } from 'react-router';
 import { useState } from 'react';
+import { useNotificationContext } from '../notifications/hooks/useNotification';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const { mutate: login, isPending, isError, error } = useLogin();
+  const { setNotification } = useNotificationContext();
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const { mutateAsync: login, isPending, isError, error } = useLogin();
+
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    login(
-      { email, password },
-      {
-        onSuccess: () => {
-          navigate('/');
+    try {
+      login(
+        { email, password },
+        {
+          onSuccess: () => {
+            navigate('/');
+          },
         },
-      },
-    );
+      );
+      setNotification('Login Success', 'success');
+    } catch (error) {
+      setNotification(`Login Error: ${error}`, 'success');
+    }
   };
 
   return (

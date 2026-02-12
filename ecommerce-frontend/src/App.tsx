@@ -5,11 +5,13 @@ import { Routes, Route } from 'react-router';
 import Products from './pages/Products';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Notification from './notifications/Notification';
 
 function App() {
   return (
     <>
       <Panel />
+      <Notification/>
       <Routes>
         <Route index element={<Home />} />
         <Route path='products' element={<Products />} />

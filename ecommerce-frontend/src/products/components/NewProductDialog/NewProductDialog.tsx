@@ -7,16 +7,23 @@ import ShowHide from '../UI/ShowHide';
 import { useAddProduct } from '../../hooks/useAddProduct';
 import { useNewProductContext } from '../../hooks/useNewProduct';
 import { useNewProductDialogContext } from '../../hooks/useNewProductDialog';
+import { useNotificationContext } from '../../../notifications/hooks/useNotification';
 
 const NewProductDialog = () => {
   const { newProduct } = useNewProductContext();
-  const { isOpen, close} = useNewProductDialogContext();
-  const { mutate: addProduct } = useAddProduct();
+  const { isOpen, close } = useNewProductDialogContext();
+  const { mutateAsync: addProduct } = useAddProduct();
+  const { setNotification } = useNotificationContext();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    addProduct(newProduct);
-    close();
+    try {
+      addProduct(newProduct);
+      close();
+      setNotification('Product added successfully', 'success');
+    } catch (error) {
+      setNotification(`Error adding product:${error}`, 'error');
+    }
   };
 
   return (

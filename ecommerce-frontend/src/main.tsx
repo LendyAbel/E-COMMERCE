@@ -7,6 +7,7 @@ import App from './App.tsx';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './auth/context/AuthContext.tsx';
+import { NotificationProvider } from './notifications/context/NotificationContext.tsx';
 
 const queryClient = new QueryClient();
 
@@ -14,7 +15,9 @@ createRoot(document.getElementById('root')!).render(
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
       <BrowserRouter>
-        <App />
+        <NotificationProvider>
+          <App />
+        </NotificationProvider>
       </BrowserRouter>
     </AuthProvider>
   </QueryClientProvider>,
