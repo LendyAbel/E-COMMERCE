@@ -1,16 +1,9 @@
 import { Box, Input } from '@mui/material';
-import { useContext } from 'react';
-import { NewProductContext } from '../../../context/newProductContext';
 import type { NewProduct } from '../../../productTypes';
+import { useNewProductContext } from '../../../hooks/useNewProduct';
 
 const RequiredFields = () => {
-  const context = useContext(NewProductContext);
-  if (!context) {
-    throw new Error(
-      'RequiredFields must be used within NewProductContext.Provider',
-    );
-  }
-  const { newProduct, updateField } = context;
+  const { newProduct, updateField } = useNewProductContext();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;

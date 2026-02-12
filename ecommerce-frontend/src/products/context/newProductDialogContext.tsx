@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from 'react';
-import { useNewProduct } from '../hooks/useNewProduct';
+import { useNewProductContext } from '../hooks/useNewProduct';
 import { NewProductDialogContext } from '../hooks/useNewProductDialog';
 
 export const NewProductDialogProvider = ({
@@ -8,7 +8,7 @@ export const NewProductDialogProvider = ({
   children: ReactNode;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { resetNewProduct } = useNewProduct();
+  const { resetNewProduct } = useNewProductContext();
 
   const open = () => {
     setIsOpen(true);

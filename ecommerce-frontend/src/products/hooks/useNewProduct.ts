@@ -1,38 +1,26 @@
-import { useCallback, useState } from 'react';
+import { createContext, useContext } from 'react';
 import type { NewProduct } from '../productTypes';
 
-const createEmptyNewProduct = (): NewProduct => ({
-  sku: '',
-  name: '',
-  shortDescription: '',
-  price: 0,
-  vatType: 0,
-  slug: undefined,
-  longDescription: undefined,
-  brand: undefined,
-  mainCategory: undefined,
-  otherCategory: undefined,
-  stock: undefined,
-  status: undefined,
-  images: undefined,
-  variants: undefined,
-  attributes: undefined,
-  inStock: undefined,
-});
+interface NewProductContextValue {
+  newProduct: NewProduct;
+  setNewProduct: React.Dispatch<React.SetStateAction<NewProduct>>;
+  resetNewProduct: () => void;
+  updateField: <K extends keyof NewProduct>(
+    key: K,
+    value: NewProduct[K],
+  ) => void;
+}
 
-export const useNewProduct = () => {
-  const [newProduct, setNewProduct] = useState<NewProduct>(createEmptyNewProduct());
+export const NewProductContext = createContext<NewProductContextValue | null>(
+  null,
+);
 
-  const resetNewProduct = useCallback(() => {
-    setNewProduct(createEmptyNewProduct());
-  }, []);
-
-  const updateField = useCallback(
-    <K extends keyof NewProduct>(key: K, value: NewProduct[K]) => {
-      setNewProduct(prev => ({ ...prev, [key]: value }));
-    },
-    []
-  );
-
-  return { newProduct, setNewProduct, resetNewProduct, updateField };
+export const useNewProductContext = () => {
+  const context = useContext(NewProductContext);
+  if (!context) {
+    throw new Error(
+      'useNewProductDialogContext must be used within NewProductDialogProvider',
+    );
+  }
+  return context;
 };

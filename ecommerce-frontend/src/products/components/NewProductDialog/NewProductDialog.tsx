@@ -5,11 +5,11 @@ import { Box, Button, Dialog, DialogContent, DialogTitle } from '@mui/material';
 import { Close } from '@mui/icons-material';
 import ShowHide from '../UI/ShowHide';
 import { useAddProduct } from '../../hooks/useAddProduct';
-import { useNewProduct } from '../../hooks/useNewProduct';
+import { useNewProductContext } from '../../hooks/useNewProduct';
 import { useNewProductDialogContext } from '../../hooks/useNewProductDialog';
 
 const NewProductDialog = () => {
-  const { newProduct } = useNewProduct();
+  const { newProduct } = useNewProductContext();
   const { isOpen, close} = useNewProductDialogContext();
   const { mutate: addProduct } = useAddProduct();
 

@@ -2,17 +2,17 @@ import type { User } from '../users/types';
 
 export const users: User[] = [
   {
-    id: '5470d77b-0d74-45c0-bdc7-13c0af969be6',
+    id: 'c2f10b34-bdcd-46da-b770-9e91a425af09',
     email: 'admin@test.com',
     passwordHash:
-      '$2b$10$ZxSkeLRiuULpVc2LLpPtre/QkRL47969gTaD8A5swNd2S2bs/6dXO',
+      '$2b$10$/1iTC3p.L6rD1FMEPDjLROfMDHsrRHbZ.BXht2MLk8Yrv0ydvzthu',
     role: 'admin',
   },
   {
-    id: '6b3f2a67-480f-4658-95e1-779b6d4b76a7',
+    id: 'cad24f15-14da-46e3-8460-12ddfa2ee689',
     email: 'user@test.com',
     passwordHash:
-      '$2b$10$Ybyj17pc3zNZM.mjC6GqdO37FT6G3dZUsHYOE4vVE0.NyHH/sp55u',
+      '$2b$10$IapfL60NBGdbBU0CI6V0ouRIn4qyR8YVmIPW034Cv7MKVzFKM69IG',
     role: 'user',
   },
 ];

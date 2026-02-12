@@ -1,16 +1,47 @@
-import { createContext } from 'react';
+import { useCallback, useState, type ReactNode } from 'react';
 import type { NewProduct } from '../productTypes';
+import { NewProductContext } from '../hooks/useNewProduct';
 
-export interface NewProductContextValue {
-  newProduct: NewProduct;
-  setNewProduct: React.Dispatch<React.SetStateAction<NewProduct>>;
-  resetNewProduct: () => void;
-  updateField: <K extends keyof NewProduct>(
-    key: K,
-    value: NewProduct[K]
-  ) => void;
-}
+const createEmptyNewProduct = (): NewProduct => ({
+  sku: '',
+  name: '',
+  shortDescription: '',
+  price: 0,
+  vatType: 0,
+  slug: undefined,
+  longDescription: undefined,
+  brand: undefined,
+  mainCategory: undefined,
+  otherCategory: undefined,
+  stock: undefined,
+  status: undefined,
+  images: undefined,
+  variants: undefined,
+  attributes: undefined,
+  inStock: undefined,
+});
 
-export const NewProductContext = createContext<NewProductContextValue | null>(
-  null
-);
+export const NewProductProvider = ({ children }: { children: ReactNode }) => {
+  const [newProduct, setNewProduct] = useState<NewProduct>(
+    createEmptyNewProduct(),
+  );
+
+  const resetNewProduct = useCallback(() => {
+    setNewProduct(createEmptyNewProduct());
+  }, []);
+
+  const updateField = useCallback(
+    <K extends keyof NewProduct>(key: K, value: NewProduct[K]) => {
+      setNewProduct(prev => ({ ...prev, [key]: value }));
+    },
+    [],
+  );
+
+  return (
+    <NewProductContext.Provider
+      value={{ newProduct, setNewProduct, resetNewProduct, updateField }}
+    >
+      {children}
+    </NewProductContext.Provider>
+  );
+};

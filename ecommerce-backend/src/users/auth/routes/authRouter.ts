@@ -29,6 +29,9 @@ router.post(
       }
 
       const passwordHash = await hashPassword(password);
+
+      console.log(passwordHash);
+
       const user = userService.createUser({ email, passwordHash, role });
 
       const token = signToken(user);

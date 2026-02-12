@@ -1,7 +1,7 @@
 // ProductsContainer.tsx
 import { useQuery } from '@tanstack/react-query';
 import { fetchAllProducts } from '../../services/productServices';
-import { NewProductContext } from '../../context/newProductContext';
+import { NewProductProvider } from '../../context/newProductContext';
 import { useAuthContext } from '../../../auth/hooks/useAuthContext';
 
 import type { Product } from '../../productTypes';
@@ -10,7 +10,6 @@ import { Alert, Box, Skeleton } from '@mui/material';
 
 import NewProductDialog from '../NewProductDialog/NewProductDialog';
 import ProductCard from './ProductCard/ProductCard';
-import { useNewProduct } from '../../hooks/useNewProduct';
 import { NewProductDialogProvider } from '../../context/newProductDialogContext';
 import AddProductButton from './AddProductButton/AddProductButton';
 
@@ -21,9 +20,6 @@ const ProductsContainer = () => {
     retry: 3,
   });
   const products = data ?? [];
-
-  const { newProduct, setNewProduct, resetNewProduct, updateField } =
-    useNewProduct();
 
   const { user } = useAuthContext();
 
@@ -50,9 +46,7 @@ const ProductsContainer = () => {
   }
 
   return (
-    <NewProductContext.Provider
-      value={{ newProduct, setNewProduct, resetNewProduct, updateField }}
-    >
+    <NewProductProvider>
       <NewProductDialogProvider>
         <div style={{ position: 'relative' }}>
           {user?.role === 'admin' && <AddProductButton />}
@@ -72,7 +66,7 @@ const ProductsContainer = () => {
           <NewProductDialog />
         </div>
       </NewProductDialogProvider>
-    </NewProductContext.Provider>
+    </NewProductProvider>
   );
 };
 

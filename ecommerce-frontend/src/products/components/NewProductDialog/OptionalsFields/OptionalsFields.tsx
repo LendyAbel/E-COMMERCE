@@ -8,20 +8,14 @@ import {
 import SimpleSelect from '../../UI/Inputs/SimpleSelect';
 import MultipleSelect from '../../UI/Inputs/MultipleSelect';
 
-import { useContext } from 'react';
-import { NewProductContext } from '../../../context/newProductContext';
 import { useQuery } from '@tanstack/react-query';
 import { fetchAllCategories } from '../../../services/categoryServices';
+import { useNewProductContext } from '../../../hooks/useNewProduct';
 
 const OptionalFields = () => {
   const statusOptions: ProductStatus[] = [...PRODUCT_STATUS];
-  const context = useContext(NewProductContext);
-  if (!context) {
-    throw new Error(
-      'OptionalFields must be used within NewProductContext.Provider',
-    );
-  }
-  const { newProduct, updateField } = context;
+
+  const { newProduct, updateField } = useNewProductContext();
 
   const { data } = useQuery({
     queryKey: ['categories'],
