@@ -30,7 +30,6 @@ export const addNewProduct = async (
     let errorMessage = '';
     if (axios.isAxiosError(error)) {
       const responseData = error.response?.data.error;
-      console.log(responseData);
       errorMessage += responseData;
     }
     console.error('Error adding product:', errorMessage);

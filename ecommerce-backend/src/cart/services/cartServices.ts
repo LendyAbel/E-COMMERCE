@@ -20,40 +20,40 @@ const getUserCart = (userId: string): Cart => {
     return cart;
 };
 
-// const addItemToCart = (userId: string, item: NewCartItem): Cart => {
-//     const cart = getUserCart(userId);
+const addItemToCart = (userId: string, item: NewCartItem): Cart => {
+    const cart = getUserCart(userId);
 
-//     //Checking if product exist
-//     const product = products.find(product => product.id === item.productId);
-//     if (!product) {
-//         throwAppError(`Product with id: ${item.productId} not found`, 404);
-//     }
+    //Checking if product exist
+    const product = products.find(product => product.id === item.productId);
+    if (!product) {
+        throwAppError(`Product with id: ${item.productId} not found`, 404);
+    }
 
-//     //Establish price (variant or product base)
-//     let price = product.price;
-//     if (item.variantId) {
-//         const variant = product.variants?.find(
-//             variant => variant.id === item.variantId,
-//         );
-//         if (!variant) {
-//             throwAppError(`Variant with id: ${item.variantId} not found`, 404);
-//         }
-//         price = variant.price;
-//     }
+    //Establish price (variant or product base)
+    let price = product.price;
+    if (item.variantId) {
+        const variant = product.variants?.find(
+            variant => variant.id === item.variantId,
+        );
+        if (!variant) {
+            throwAppError(`Variant with id: ${item.variantId} not found`, 404);
+        }
+        price = variant.price;
+    }
 
-//     //Find if item already exist
-//     const existingItem = cart.items.find(
-//         i => i.productId === item.productId && i.variantId === item.variantId,
-//     );
-//     if (existingItem) {
-//         existingItem.quantity += item.quantity;
-//     } else {
-//         cart.items.push({ ...item, price });
-//     }
+    //Find if item already exist
+    const existingItem = cart.items.find(
+        i => i.productId === item.productId && i.variantId === item.variantId,
+    );
+    if (existingItem) {
+        existingItem.quantity += item.quantity;
+    } else {
+        cart.items.push({ ...item, price });
+    }
 
-//     cart.updatedAt = new Date();
-//     return cart;
-// };
+    cart.updatedAt = new Date();
+    return cart;
+};
 
 // const updateCartItem = (
 //     userId: string,
@@ -127,4 +127,5 @@ const getUserCart = (userId: string): Cart => {
 
 export default {
     getUserCart,
+    addItemToCart
 };

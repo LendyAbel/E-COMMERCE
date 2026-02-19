@@ -22,24 +22,24 @@ router.get(
     },
 );
 
-// // POST /api/cart/itmes (add item)
-// router.post(
-//     '/itmes',
-//     async (
-//         req: Request<unknown, Cart, NewCartItem>,
-//         res: Response<Cart>,
-//         next: NextFunction,
-//     ) => {
-//         try {
-//             const userId = req.user!.id;
-//             const item = req.body;
-//             const cart = cartServices.addItemToCart(userId, item);
-//             res.status(201).json(cart);
-//         } catch (error) {
-//             next(error);
-//         }
-//     },
-// );
+// POST /api/cart/itmes (add item)
+router.post(
+    '/items',
+    async (
+        req: Request<unknown, Cart, NewCartItem>,
+        res: Response<Cart>,
+        next: NextFunction,
+    ) => {
+        try {
+            const userId = req.user!.id;
+            const item = req.body;
+            const cart = cartServices.addItemToCart(userId, item);
+            res.status(201).json(cart);
+        } catch (error) {
+            next(error);
+        }
+    },
+);
 
 // // PUT /api/cart/items/:productId (update item)
 // router.put(

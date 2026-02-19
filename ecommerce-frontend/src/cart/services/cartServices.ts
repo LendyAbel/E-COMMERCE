@@ -1,5 +1,5 @@
 import type { AxiosResponse } from 'axios';
-import type { ServerCart } from '../types';
+import type { NewCartItem, ServerCart } from '../types';
 import axios from 'axios';
 
 const API_URL = '/api/cart';
@@ -11,5 +11,17 @@ export const fetchCart = async (): Promise<ServerCart> => {
     const res: AxiosResponse<ServerCart> = await axios.get(API_URL, {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
     });
+    return res.data;
+};
+
+export const addItemToCart = async (item: NewCartItem): Promise<ServerCart> => {
+    const token = getToken();
+    const res: AxiosResponse<ServerCart> = await axios.post(
+        `${API_URL}/items`,
+        item,
+        {
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+        },
+    );
     return res.data;
 };

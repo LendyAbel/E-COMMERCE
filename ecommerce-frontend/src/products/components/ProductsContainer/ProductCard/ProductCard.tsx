@@ -14,10 +14,12 @@ import {
 } from '@mui/icons-material';
 import type { Product } from '../../../productTypes';
 import { useState } from 'react';
+import AddToCart from '../../../../cart/components/AddToCart';
 
 interface ProductCardProps {
   product: Product;
 }
+
 const ProductCard = ({ product }: ProductCardProps) => {
   const [expand, setExpand] = useState(false);
 
@@ -51,6 +53,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
           <Typography>{product.longDescription}</Typography>
         </Collapse>
       </CardContent>
+      <AddToCart productId={product.id}/>
     </Card>
   );
 };

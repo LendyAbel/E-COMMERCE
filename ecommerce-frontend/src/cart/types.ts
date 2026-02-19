@@ -5,6 +5,8 @@ export interface CartItem {
     price: number;
 }
 
+export type NewCartItem = Omit<CartItem, 'price'>;
+
 export interface ServerCart {
     id: string;
     userId: string;

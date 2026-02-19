@@ -1,8 +1,9 @@
 import { createContext, useContext } from 'react';
-import type { Cart } from '../types';
+import type { Cart, NewCartItem } from '../types';
 
 interface CartContextValue {
     cart: Cart;
+    addItem: (item: NewCartItem) => Promise<void>;
 }
 
 export const CartContext = createContext<CartContextValue | null>(null);
