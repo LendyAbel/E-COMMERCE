@@ -4,6 +4,8 @@ import { CartContext } from '../hooks/useCart';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAuthContext } from '../../auth/hooks/useAuthContext';
 import { addItemToCart, fetchCart } from '../services/cartServices';
+import { fetchAllProducts } from '../../products/services/productServices';
+import type { Product } from '../../products/productTypes';
 
 const CART_STORAGE_KEY = 'guest_cart';
 
@@ -17,11 +19,15 @@ const saveGuestCart = (items: CartItem[]) => {
 };
 
 const cartParse = (items: CartItem[]): Cart => {
-    const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
-    const totalPrice = items.reduce(
-        (sum, item) => sum + item.price * item.quantity,
-        0,
-    );
+    const totalItems = items.reduce((acc, item) => {
+        const qty = Number(item.quantity) || 0;
+        return acc + qty;
+    }, 0);
+    const totalPrice = items.reduce((acc, item) => {
+        const price = Number(item.price) || 0;
+        const qty = Number(item.quantity) || 0;
+        return acc + price * qty;
+    }, 0);
     return { items, totalItems, totalPrice };
 };
 
@@ -30,18 +36,32 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     const { user, isAuthenticated } = useAuthContext();
     const [guestCart, setGuestCart] = useState<CartItem[]>(getGuestCart);
 
-    const { data } = useQuery({
+    //FETCH PRODUCTS
+    const { data: productData } = useQuery({
+        queryKey: ['products'],
+        queryFn: fetchAllProducts,
+        retry: 3,
+    });
+    const products = productData ?? [];
+
+    //AUX FUNCTION TO GET PRODUCT DETAIL
+    const getProductDetail = (productId: string): Product | undefined => {
+        return products.find(p => p.id === productId);
+    };
+
+    //FETCH CART
+    const { data: CartData } = useQuery({
         queryKey: ['cart', user?.id],
         queryFn: fetchCart,
         enabled: isAuthenticated,
     });
-
     const cart: Cart = isAuthenticated
-        ? data
-            ? cartParse(data.items)
+        ? CartData
+            ? cartParse(CartData.items)
             : cartParse([])
-        : cartParse(getGuestCart());
+        : cartParse(guestCart);
 
+    //ADD ITEM TO CART
     const mutate = useMutation({
         mutationFn: addItemToCart,
         onSuccess: () => {
@@ -58,6 +78,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
                     i.productId === item.productId &&
                     i.variantId === item.variantId,
             );
+            const product = getProductDetail(item.productId);
+
             const updatedCart = existingItem
                 ? guestCart.map(i =>
                       i.productId === item.productId &&
@@ -65,7 +87,10 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
                           ? { ...i, quantity: i.quantity + item.quantity }
                           : i,
                   )
-                : [...guestCart, { ...item, price: 0 }];
+                : [
+                      ...guestCart,
+                      { ...item, price: Number(product?.price) || 0 },
+                  ];
             setGuestCart(updatedCart);
             saveGuestCart(updatedCart);
         }
