@@ -40,3 +40,20 @@ export const deleteItemFromCart = async (
     );
     return res.data;
 };
+
+export const updateQtyItemInCart = async (
+    itemId: string,
+    quantity: number,
+    variantId?: string,
+): Promise<ServerCart> => {
+    const token = getToken();
+    const res: AxiosResponse<ServerCart> = await axios.put(
+        `${API_URL}/items/${itemId}`,
+        { quantity },
+        {
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+            params: variantId ? { variantId } : undefined,
+        },
+    );
+    return res.data;
+};

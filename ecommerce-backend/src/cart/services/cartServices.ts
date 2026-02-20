@@ -55,32 +55,32 @@ const addItemToCart = (userId: string, item: NewCartItem): Cart => {
     return cart;
 };
 
-// const updateCartItem = (
-//     userId: string,
-//     productId: string,
-//     variantId: string | undefined,
-//     quantity: number,
-// ) => {
-//     const cart = getUserCart(userId);
+const updateQtyCartItem = (
+    userId: string,
+    productId: string,
+    quantity: number,
+    variantId?: string | undefined,
+) => {
+    const cart = getUserCart(userId);
 
-//     const item = cart.items.find(
-//         i => i.productId === productId && i.variantId === variantId,
-//     );
-//     if (!item) {
-//         throwAppError(`Item with id: ${productId} not found in cart`, 404);
-//     }
+    const item = cart.items.find(
+        i => i.productId === productId && i.variantId === variantId,
+    );
+    if (!item) {
+        throwAppError(`Item with id: ${productId} not found in cart`, 404);
+    }
 
-//     if (quantity <= 0) {
-//         cart.items = cart.items.filter(
-//             i => !(i.productId === productId && i.variantId === variantId),
-//         );
-//     } else {
-//         item.quantity = quantity;
-//     }
+    if (quantity <= 0) {
+        cart.items = cart.items.filter(
+            i => !(i.productId === productId && i.variantId === variantId),
+        );
+    } else {
+        item.quantity = quantity;
+    }
 
-//     cart.updatedAt = new Date();
-//     return cart;
-// };
+    cart.updatedAt = new Date();
+    return cart;
+};
 
 const removeCartItem = (
     userId: string,
@@ -129,4 +129,7 @@ export default {
     getUserCart,
     addItemToCart,
     removeCartItem,
+    updateQtyCartItem,
+    // clearCart,
+    // mergeGuestCart,
 };

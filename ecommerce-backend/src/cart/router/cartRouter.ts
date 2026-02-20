@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { authenticateMiddleware } from '../../users/auth/authenticateMiddleware';
-import { Cart, CartItem, NewCartItem } from '../types';
+import { Cart, NewCartItem } from '../types';
 import cartServices from '../services/cartServices';
 
 const router = express.Router();
@@ -41,38 +41,49 @@ router.post(
     },
 );
 
-// // PUT /api/cart/items/:productId (update item)
-// router.put(
-//     '/itmes/:productId',
-//     async (
-//         req: Request<string, Cart, { variantId?: string; quantity: number }>,
-//         res: Response<Cart>,
-//         next: NextFunction,
-//     ) => {
-//         try {
-//             const userId = req.user!.id;
-//             const productId = req.params;
-//             const { variantId, quantity } = req.body;
+// PUT /api/cart/items/:productId (update qty item)
+router.put(
+    '/items/:productId',
+    async (
+        req: Request<
+            { productId: string },
+            Cart,
+            { quantity: number },
+            { variantId?: string }
+        >,
+        res: Response<Cart>,
+        next: NextFunction,
+    ) => {
+        try {
+            const userId = req.user!.id;
+            const { productId } = req.params;
+            const { quantity } = req.body;
+            const { variantId } = req.query;
 
-//             const cart = cartServices.updateCartItem(
-//                 userId,
-//                 productId,
-//                 variantId,
-//                 quantity,
-//             );
+            const cart = cartServices.updateQtyCartItem(
+                userId,
+                productId,
+                quantity,
+                variantId,
+            );
 
-//             res.json(cart);
-//         } catch (error) {
-//             next(error);
-//         }
-//     },
-// );
+            res.json(cart);
+        } catch (error) {
+            next(error);
+        }
+    },
+);
 
 // DELETE /api/cart/items/:productId (delete item)
 router.delete(
     '/items/:productId',
     async (
-        req: Request<{productId: string}, Cart, unknown, { variantId?: string }>,
+        req: Request<
+            { productId: string },
+            Cart,
+            unknown,
+            { variantId?: string }
+        >,
         res: Response<Cart>,
         next: NextFunction,
     ) => {

@@ -19,7 +19,7 @@ interface CartItemCardProps {
 
 const CartItemCard = ({ item }: CartItemCardProps) => {
     const { setNotification } = useNotificationContext();
-    const { deleteItem } = useCart();
+    const { deleteItem, updateQtyItem } = useCart();
     //GET PRODUCT DETAIL
     const { data: productData } = useQuery({
         queryKey: ['products'],
@@ -29,20 +29,30 @@ const CartItemCard = ({ item }: CartItemCardProps) => {
     const products = productData ?? [];
     const product = products.find(p => p.id === item.productId);
 
-    //DECREMENT QTY
-    const handleDecrement = (item: CartItem) => {
-        console.log(item);
+    //DECREMENT 1ud QTY
+    const handleDecrement = async (item: CartItem) => {
+        try {
+            await updateQtyItem(item.productId, item.quantity - 1);
+        } catch (error) {
+            setNotification('Error updating quantity', 'error');
+            throw error;
+        }
     };
 
-    //INCREMENT QTY
-    const handleIncrement = (item: CartItem) => {
-        console.log(item);
+    //INCREMENT 1ud QTY
+    const handleIncrement = async (item: CartItem) => {
+        try {
+            await updateQtyItem(item.productId, item.quantity + 1);
+        } catch (error) {
+            setNotification('Error updating quantity', 'error');
+            throw error;
+        }
     };
 
     //REMOVE ITEM
     const handleRemove = async (item: CartItem) => {
         try {
-            await deleteItem(item);
+            await deleteItem(item.productId, item.variantId);
             setNotification('Item removed from cart', 'success');
         } catch (error) {
             setNotification('Error removing item from cart', 'error');

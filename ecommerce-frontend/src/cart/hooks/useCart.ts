@@ -1,10 +1,15 @@
 import { createContext, useContext } from 'react';
-import type { Cart, CartItem, NewCartItem } from '../types';
+import type { Cart, NewCartItem } from '../types';
 
 interface CartContextValue {
     cart: Cart;
     addItem: (item: NewCartItem) => Promise<void>;
-    deleteItem: (item: CartItem) => Promise<void>
+    deleteItem: (itemId: string, variantId?: string) => Promise<void>;
+    updateQtyItem: (
+        itemId: string,
+        quantity: number,
+        variantId?: string,
+    ) => Promise<void>;
 }
 
 export const CartContext = createContext<CartContextValue | null>(null);

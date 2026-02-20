@@ -7,6 +7,7 @@ import {
     addItemToCart,
     deleteItemFromCart,
     fetchCart,
+    updateQtyItemInCart,
 } from '../services/cartServices';
 import { fetchAllProducts } from '../../products/services/productServices';
 import type { Product } from '../../products/productTypes';
@@ -101,17 +102,57 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
     //DELETE ITEM
     const deleteMutate = useMutation({
-        mutationFn: deleteItemFromCart,
+        mutationFn: ({
+            itemId,
+            variantId,
+        }: {
+            itemId: string;
+            variantId?: string;
+        }) => deleteItemFromCart(itemId, variantId),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['cart', user?.id] });
         },
     });
-    const deleteItem = async (item: CartItem) => {
+    const deleteItem = async (itemId: string, variantId?: string) => {
         if (isAuthenticated) {
-            await deleteMutate.mutateAsync(item.productId);
+            await deleteMutate.mutateAsync({ itemId, variantId });
         } else {
             const updatedCart = guestCart.filter(
-                i => i.productId !== item.productId,
+                i => i.productId !== itemId && i.variantId !== variantId,
+            );
+            setGuestCart(updatedCart);
+            saveGuestCart(updatedCart);
+        }
+    };
+
+    // UPDATE ITEM
+    const updateMutate = useMutation({
+        mutationFn: ({
+            itemId,
+            quantity,
+            variantId,
+        }: {
+            itemId: string;
+            quantity: number;
+            variantId?: string;
+        }) => updateQtyItemInCart(itemId, quantity, variantId),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['cart', user?.id] });
+        },
+    });
+
+    const updateQtyItem = async (
+        itemId: string,
+        quantity: number,
+        variantId?: string,
+    ) => {
+        if (isAuthenticated) {
+            await updateMutate.mutateAsync({ itemId, quantity, variantId });
+        } else {
+            const updatedCart = guestCart.map(i =>
+                i.productId === itemId && i.variantId === variantId
+                    ? { ...i, quantity }
+                    : i,
             );
             setGuestCart(updatedCart);
             saveGuestCart(updatedCart);
@@ -119,7 +160,9 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     };
 
     return (
-        <CartContext.Provider value={{ cart, addItem, deleteItem }}>
+        <CartContext.Provider
+            value={{ cart, addItem, deleteItem, updateQtyItem }}
+        >
             {children}
         </CartContext.Provider>
     );
