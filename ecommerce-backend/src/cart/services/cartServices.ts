@@ -1,7 +1,7 @@
 import { carts } from '../../data/carts';
 import { products } from '../../data/products-list';
 import { throwAppError } from '../../utils/errorMiddleware';
-import { Cart, CartItem, NewCartItem } from '../types';
+import { Cart, NewCartItem } from '../types';
 import { v4 as uuid } from 'uuid';
 
 const getUserCart = (userId: string): Cart => {
@@ -82,20 +82,20 @@ const addItemToCart = (userId: string, item: NewCartItem): Cart => {
 //     return cart;
 // };
 
-// const removeCartItem = (
-//     userId: string,
-//     productId: string,
-//     variantId?: string,
-// ): Cart => {
-//     const cart = getUserCart(userId);
+const removeCartItem = (
+    userId: string,
+    productId: string,
+    variantId?: string,
+): Cart => {
+    const cart = getUserCart(userId);
 
-//     cart.items = cart.items.filter(
-//         i => !(i.productId === productId && i.variantId === variantId),
-//     );
+    cart.items = cart.items.filter(
+        i => !(i.productId === productId && i.variantId === variantId),
+    );
 
-//     cart.updatedAt = new Date();
-//     return cart;
-// };
+    cart.updatedAt = new Date();
+    return cart;
+};
 
 // const clearCart = (userId: string): Cart => {
 //     const cart = getUserCart(userId);
@@ -127,5 +127,6 @@ const addItemToCart = (userId: string, item: NewCartItem): Cart => {
 
 export default {
     getUserCart,
-    addItemToCart
+    addItemToCart,
+    removeCartItem,
 };

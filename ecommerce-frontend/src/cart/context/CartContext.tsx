@@ -3,21 +3,25 @@ import type { Cart, CartItem, NewCartItem } from '../types';
 import { CartContext } from '../hooks/useCart';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAuthContext } from '../../auth/hooks/useAuthContext';
-import { addItemToCart, fetchCart } from '../services/cartServices';
+import {
+    addItemToCart,
+    deleteItemFromCart,
+    fetchCart,
+} from '../services/cartServices';
 import { fetchAllProducts } from '../../products/services/productServices';
 import type { Product } from '../../products/productTypes';
 
 const CART_STORAGE_KEY = 'guest_cart';
 
+//AUX FUNCTIONS
+
 const getGuestCart = (): CartItem[] => {
     const stored = localStorage.getItem(CART_STORAGE_KEY);
     return stored ? JSON.parse(stored) : [];
 };
-
 const saveGuestCart = (items: CartItem[]) => {
     localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
 };
-
 const cartParse = (items: CartItem[]): Cart => {
     const totalItems = items.reduce((acc, item) => {
         const qty = Number(item.quantity) || 0;
@@ -36,15 +40,15 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     const { user, isAuthenticated } = useAuthContext();
     const [guestCart, setGuestCart] = useState<CartItem[]>(getGuestCart);
 
-    //FETCH PRODUCTS
+    //GET PRODUCT DETAIL
+    //fetch products
     const { data: productData } = useQuery({
         queryKey: ['products'],
         queryFn: fetchAllProducts,
         retry: 3,
     });
     const products = productData ?? [];
-
-    //AUX FUNCTION TO GET PRODUCT DETAIL
+    //function to get product detail
     const getProductDetail = (productId: string): Product | undefined => {
         return products.find(p => p.id === productId);
     };
@@ -62,16 +66,15 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         : cartParse(guestCart);
 
     //ADD ITEM TO CART
-    const mutate = useMutation({
+    const addMutate = useMutation({
         mutationFn: addItemToCart,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['cart', user?.id] });
         },
     });
-
     const addItem = async (item: NewCartItem) => {
         if (isAuthenticated) {
-            await mutate.mutateAsync(item);
+            await addMutate.mutateAsync(item);
         } else {
             const existingItem = guestCart.find(
                 i =>
@@ -96,8 +99,27 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         }
     };
 
+    //DELETE ITEM
+    const deleteMutate = useMutation({
+        mutationFn: deleteItemFromCart,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['cart', user?.id] });
+        },
+    });
+    const deleteItem = async (item: CartItem) => {
+        if (isAuthenticated) {
+            await deleteMutate.mutateAsync(item.productId);
+        } else {
+            const updatedCart = guestCart.filter(
+                i => i.productId !== item.productId,
+            );
+            setGuestCart(updatedCart);
+            saveGuestCart(updatedCart);
+        }
+    };
+
     return (
-        <CartContext.Provider value={{ cart, addItem }}>
+        <CartContext.Provider value={{ cart, addItem, deleteItem }}>
             {children}
         </CartContext.Provider>
     );

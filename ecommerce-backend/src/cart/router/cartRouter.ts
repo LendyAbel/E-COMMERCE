@@ -68,30 +68,30 @@ router.post(
 //     },
 // );
 
-// // DELETE /api/cart/items/:productId (delete item)
-// router.delete(
-//     '/items/:productId',
-//     async (
-//         req: Request<string, Cart, unknown, { variantId?: string }>,
-//         res: Response<Cart>,
-//         next: NextFunction,
-//     ) => {
-//         try {
-//             const userId = req.user!.id;
-//             const productId = req.params;
-//             const { variantId } = req.query;
+// DELETE /api/cart/items/:productId (delete item)
+router.delete(
+    '/items/:productId',
+    async (
+        req: Request<{productId: string}, Cart, unknown, { variantId?: string }>,
+        res: Response<Cart>,
+        next: NextFunction,
+    ) => {
+        try {
+            const userId = req.user!.id;
+            const { productId } = req.params;
+            const { variantId } = req.query;
 
-//             const cart = cartServices.removeCartItem(
-//                 userId,
-//                 productId,
-//                 variantId as string | undefined,
-//             );
-//             res.json(cart);
-//         } catch (error) {
-//             next(error);
-//         }
-//     },
-// );
+            const cart = cartServices.removeCartItem(
+                userId,
+                productId,
+                variantId as string | undefined,
+            );
+            res.json(cart);
+        } catch (error) {
+            next(error);
+        }
+    },
+);
 
 // //DELETE /api/cart/  (clear cart)
 // router.delete(
@@ -126,4 +126,4 @@ router.post(
 //     },
 // );
 
-export default router
+export default router;

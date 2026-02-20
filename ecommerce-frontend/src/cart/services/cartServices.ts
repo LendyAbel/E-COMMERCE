@@ -25,3 +25,18 @@ export const addItemToCart = async (item: NewCartItem): Promise<ServerCart> => {
     );
     return res.data;
 };
+
+export const deleteItemFromCart = async (
+    itemId: string,
+    variantId?: string,
+): Promise<ServerCart> => {
+    const token = getToken();
+    const res: AxiosResponse<ServerCart> = await axios.delete(
+        `${API_URL}/items/${itemId}`,
+        {
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+            params: variantId ? { variantId } : undefined,
+        },
+    );
+    return res.data;
+};

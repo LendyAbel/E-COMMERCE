@@ -1,21 +1,21 @@
 import { ShoppingCart } from '@mui/icons-material';
 import { Button } from '@mui/material';
-import { useNotificationContext } from '../../notifications/hooks/useNotification';
-import { useCart } from '../hooks/useCart';
+import { useNotificationContext } from '../../../notifications/hooks/useNotification';
+import { useCart } from '../../hooks/useCart';
 
-type AddToCartProps = {
+type AddToCartButtonProps = {
     productId: string;
     variantId?: string;
     quantity?: number;
     disabled?: boolean;
 };
 
-const AddToCart = ({
+const AddToCartButton = ({
     productId,
     variantId,
     quantity = 1,
     disabled,
-}: AddToCartProps) => {
+}: AddToCartButtonProps) => {
     const { setNotification } = useNotificationContext();
     const { addItem } = useCart();
 
@@ -40,4 +40,4 @@ const AddToCart = ({
     );
 };
 
-export default AddToCart;
+export default AddToCartButton;
