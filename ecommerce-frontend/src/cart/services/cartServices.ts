@@ -1,27 +1,18 @@
 import type { AxiosResponse } from 'axios';
 import type { NewCartItem, ServerCart } from '../types';
-import axios from 'axios';
+import axiosInstance from '../../lib/axiosInstance';
 
 const API_URL = '/api/cart';
 
-const getToken = () => localStorage.getItem(import.meta.env.VITE_TOKEN_KEY);
-
 export const fetchCart = async (): Promise<ServerCart> => {
-    const token = getToken();
-    const res: AxiosResponse<ServerCart> = await axios.get(API_URL, {
-        headers: token ? { Authorization: `Bearer ${token}` } : {},
-    });
+    const res: AxiosResponse<ServerCart> = await axiosInstance.get(API_URL);
     return res.data;
 };
 
 export const addItemToCart = async (item: NewCartItem): Promise<ServerCart> => {
-    const token = getToken();
-    const res: AxiosResponse<ServerCart> = await axios.post(
+    const res: AxiosResponse<ServerCart> = await axiosInstance.post(
         `${API_URL}/items`,
         item,
-        {
-            headers: token ? { Authorization: `Bearer ${token}` } : {},
-        },
     );
     return res.data;
 };
@@ -30,11 +21,9 @@ export const deleteItemFromCart = async (
     itemId: string,
     variantId?: string,
 ): Promise<ServerCart> => {
-    const token = getToken();
-    const res: AxiosResponse<ServerCart> = await axios.delete(
+    const res: AxiosResponse<ServerCart> = await axiosInstance.delete(
         `${API_URL}/items/${itemId}`,
         {
-            headers: token ? { Authorization: `Bearer ${token}` } : {},
             params: variantId ? { variantId } : undefined,
         },
     );
@@ -46,12 +35,10 @@ export const updateQtyItemInCart = async (
     quantity: number,
     variantId?: string,
 ): Promise<ServerCart> => {
-    const token = getToken();
-    const res: AxiosResponse<ServerCart> = await axios.put(
+    const res: AxiosResponse<ServerCart> = await axiosInstance.put(
         `${API_URL}/items/${itemId}`,
         { quantity },
         {
-            headers: token ? { Authorization: `Bearer ${token}` } : {},
             params: variantId ? { variantId } : undefined,
         },
     );

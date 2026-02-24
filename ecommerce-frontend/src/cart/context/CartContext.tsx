@@ -41,6 +41,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     const { user, isAuthenticated } = useAuthContext();
     const [guestCart, setGuestCart] = useState<CartItem[]>(getGuestCart);
 
+
     //GET PRODUCT DETAIL
     //fetch products
     const { data: productData } = useQuery({
