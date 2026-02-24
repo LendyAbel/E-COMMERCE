@@ -1,4 +1,4 @@
-import { type AxiosResponse } from 'axios';
+import axios, { type AxiosResponse } from 'axios';
 import type {
     AuthResponse,
     LoginCredentials,
@@ -21,9 +21,19 @@ export const loginUser = async (
 export const registerUser = async (
     credentials: RegisterCredentials,
 ): Promise<AuthResponse> => {
-    const res: AxiosResponse<AuthResponse> = await axiosInstance.post(
-        `${AUTH_URL}/register`,
-        credentials,
-    );
-    return res.data;
+    try {
+        const res: AxiosResponse<AuthResponse> = await axiosInstance.post(
+            `${AUTH_URL}/register`,
+            credentials,
+        );
+        return res.data;
+    } catch (error: unknown) {
+        let errorMessage = '';
+        if (axios.isAxiosError(error)) {
+            const responseData = error.response?.data.error;
+            errorMessage += responseData;
+        }
+        console.error('Error adding product:', errorMessage);
+        throw new Error(errorMessage);
+    }
 };

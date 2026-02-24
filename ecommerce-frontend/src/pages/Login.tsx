@@ -1,75 +1,74 @@
 import { Alert, Box, Button, Input, Typography } from '@mui/material';
 import { useLogin } from '../auth/hooks/useAuth';
 import { useNavigate } from 'react-router';
-import { useState } from 'react';
 import { useNotificationContext } from '../notifications/hooks/useNotification';
+import { useForm, type SubmitHandler } from 'react-hook-form';
+
+interface FormData {
+    email: string;
+    password: string;
+}
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const navigate = useNavigate();
+    const { register, handleSubmit } = useForm<FormData>();
+    const { setNotification } = useNotificationContext();
+    const navigate = useNavigate();
+    const { mutateAsync: login, isPending, isError, error } = useLogin();
 
-  const { setNotification } = useNotificationContext();
+    const onSubmit: SubmitHandler<FormData> = ({ email, password }) => {
+        try {
+            login(
+                { email, password },
+                {
+                    onSuccess: () => {
+                        navigate('/');
+                    },
+                },
+            );
+            setNotification('Login Success', 'success');
+        } catch (error) {
+            setNotification(`Login Error: ${error}`, 'error');
+        }
+    };
 
-  const { mutateAsync: login, isPending, isError, error } = useLogin();
+    return (
+        <Box
+            component='form'
+            onSubmit={handleSubmit(onSubmit)}
+            sx={{
+                maxWidth: 400,
+                margin: 'auto',
+                mt: 4,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 2,
+            }}
+        >
+            <Typography variant='h4'>Login</Typography>
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    try {
-      login(
-        { email, password },
-        {
-          onSuccess: () => {
-            navigate('/');
-          },
-        },
-      );
-      setNotification('Login Success', 'success');
-    } catch (error) {
-      setNotification(`Login Error: ${error}`, 'success');
-    }
-  };
+            {isError && (
+                <Alert severity='error'>
+                    {(error as Error)?.message || 'Login failed'}
+                </Alert>
+            )}
 
-  return (
-    <Box
-      component='form'
-      onSubmit={handleSubmit}
-      sx={{
-        maxWidth: 400,
-        margin: 'auto',
-        mt: 4,
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 2,
-      }}
-    >
-      <Typography variant='h4'>Login</Typography>
-
-      {isError && (
-        <Alert severity='error'>
-          {(error as Error)?.message || 'Login failed'}
-        </Alert>
-      )}
-
-      <Input
-        type='email'
-        placeholder='Email'
-        value={email}
-        onChange={e => setEmail(e.target.value)}
-        required
-      />
-      <Input
-        type='password'
-        placeholder='Password'
-        value={password}
-        onChange={e => setPassword(e.target.value)}
-        required
-      />
-      <Button type='submit' variant='contained' disabled={isPending}>
-        {isPending ? 'Logging in...' : 'Login'}
-      </Button>
-    </Box>
-  );
+            <Input
+                type='email'
+                placeholder='Email'
+                {...register('email', { required: true })}
+                required
+            />
+            <Input
+                type='password'
+                placeholder='Password'
+                {...register('password', { required: true })}
+                required
+            />
+            <Button type='submit' variant='contained' disabled={isPending}>
+                {isPending ? 'Logging in...' : 'Login'}
+            </Button>
+        </Box>
+    );
 };
 
 export default Login;
