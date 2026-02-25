@@ -1,4 +1,4 @@
-import type { Product, ProductCategory } from '../products/types.js';
+import type { Product, ProductCategory } from '../products/ProductTypes.js';
 
 export const categories: ProductCategory[] = [
     {

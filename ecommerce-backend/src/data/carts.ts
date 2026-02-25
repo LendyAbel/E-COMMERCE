@@ -1,4 +1,4 @@
-import type { Cart } from '../cart/types';
+import type { Cart } from '../cart/cartTypes';
 
 export const carts: Cart[] = [
     {

@@ -1,7 +1,7 @@
 import { carts } from '../../data/carts';
 import { products } from '../../data/products-list';
 import { throwAppError } from '../../utils/errorMiddleware';
-import { Cart, NewCartItem } from '../types';
+import { Cart, NewCartItem } from '../cartTypes';
 import { v4 as uuid } from 'uuid';
 
 const getUserCart = (userId: string): Cart => {

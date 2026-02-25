@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { authenticateMiddleware } from '../../users/auth/authenticateMiddleware';
-import { Cart, NewCartItem } from '../types';
+import { Cart, NewCartItem } from '../cartTypes';
 import cartServices from '../services/cartServices';
 
 const router = express.Router();
