@@ -22,15 +22,22 @@ const Register = () => {
     const navigate = useNavigate();
 
     const onSubmit: SubmitHandler<FormData> = async ({ email, password }) => {
-        await registerUser(
-            { email, password },
-            {
-                onSuccess: () => {
-                    navigate('/');
+        try {
+            await registerUser(
+                { email, password },
+                {
+                    onSuccess: () => {
+                        navigate('/');
+                    },
                 },
-            },
-        );
-        setNotification('Registration Success', 'success');
+            );
+            setNotification('Registration Success', 'success');
+        } catch (error) {
+            setNotification(
+                `Registration Failed. ${(error as Error)?.message}`,
+                'error',
+            );
+        }
     };
 
     return (

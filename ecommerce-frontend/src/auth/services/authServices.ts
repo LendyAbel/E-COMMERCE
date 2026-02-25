@@ -11,11 +11,21 @@ const AUTH_URL = '/api/auth';
 export const loginUser = async (
     credentials: LoginCredentials,
 ): Promise<AuthResponse> => {
-    const res: AxiosResponse<AuthResponse> = await axiosInstance.post(
-        `${AUTH_URL}/login`,
-        credentials,
-    );
-    return res.data;
+    try {
+        const res: AxiosResponse<AuthResponse> = await axiosInstance.post(
+            `${AUTH_URL}/login`,
+            credentials,
+        );
+        return res.data;
+    } catch (error) {
+        let errorMessage = '';
+        if (axios.isAxiosError(error)) {
+            const responseData = error.response?.data.error;
+            errorMessage += responseData;
+        }
+        console.error('Error registering user:', errorMessage);
+        throw new Error(errorMessage);
+    }
 };
 
 export const registerUser = async (

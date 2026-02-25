@@ -10,14 +10,14 @@ interface FormData {
 }
 
 const Login = () => {
-    const { register, handleSubmit } = useForm<FormData>();
+    const { register, handleSubmit, } = useForm<FormData>();
     const { setNotification } = useNotificationContext();
     const navigate = useNavigate();
     const { mutateAsync: login, isPending, isError, error } = useLogin();
 
-    const onSubmit: SubmitHandler<FormData> = ({ email, password }) => {
+    const onSubmit: SubmitHandler<FormData> = async ({ email, password }) => {
         try {
-            login(
+            await login(
                 { email, password },
                 {
                     onSuccess: () => {
@@ -27,7 +27,7 @@ const Login = () => {
             );
             setNotification('Login Success', 'success');
         } catch (error) {
-            setNotification(`Login Error: ${error}`, 'error');
+            setNotification(`Login Failed. ${( error as Error)?.message}`, 'error');
         }
     };
 
