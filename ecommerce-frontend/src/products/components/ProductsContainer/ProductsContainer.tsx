@@ -1,7 +1,6 @@
 // ProductsContainer.tsx
 import { useQuery } from '@tanstack/react-query';
 import { fetchAllProducts } from '../../services/productServices';
-import { NewProductProvider } from '../../context/newProductContext';
 import { useAuthContext } from '../../../auth/hooks/useAuthContext';
 
 import type { Product } from '../../productTypes';
@@ -46,7 +45,6 @@ const ProductsContainer = () => {
   }
 
   return (
-    <NewProductProvider>
       <NewProductDialogProvider>
         <div style={{ position: 'relative' }}>
           {user?.role === 'admin' && <AddProductButton />}
@@ -66,7 +64,6 @@ const ProductsContainer = () => {
           <NewProductDialog />
         </div>
       </NewProductDialogProvider>
-    </NewProductProvider>
   );
 };
 

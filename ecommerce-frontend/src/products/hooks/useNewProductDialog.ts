@@ -9,11 +9,11 @@ type NewProductDialogContextValue = {
 export const NewProductDialogContext =
   createContext<NewProductDialogContextValue | null>(null);
 
-export const useNewProductDialogContext = () => {
+export const useNewProductDialog = () => {
   const context = useContext(NewProductDialogContext);
   if (!context) {
     throw new Error(
-      'useNewProductDialogContext must be used within NewProductDialogProvider',
+      'useNewProductDialog must be used within NewProductDialogProvider',
     );
   }
   return context;

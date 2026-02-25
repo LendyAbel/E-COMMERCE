@@ -1,56 +1,45 @@
-import { Box, Input } from '@mui/material';
-import type { NewProduct } from '../../../productTypes';
-import { useNewProductContext } from '../../../hooks/useNewProduct';
+import { Box, FormHelperText, Input } from '@mui/material';
+import type { FieldError, FieldErrors, UseFormRegister } from 'react-hook-form';
+import type { NewProductFormValues } from '../../../schemas/newProductSchema';
 
-const RequiredFields = () => {
-  const { newProduct, updateField } = useNewProductContext();
+interface RequiredFieldsProps {
+    register: UseFormRegister<NewProductFormValues>;
+    errors: FieldErrors<NewProductFormValues>;
+}
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
+// AUX FUNTION FOR REQUIRED ADVISE
+const RequiredAdvise = ({ error }: { error: FieldError | undefined }) => {
+    return (
+        <>{error && <FormHelperText error>{error?.message}</FormHelperText>}</>
+    );
+};
 
-    if (name === 'price' || name === 'vatType') {
-      updateField(name as 'price' | 'vatType', Number(value));
-      return;
-    }
-    updateField(name as keyof NewProduct, value);
-  };
+const RequiredFields = ({ register, errors }: RequiredFieldsProps) => {
+    return (
+        <Box className='input-container' component='div'>
+            <Input placeholder='SKU' {...register('sku')} />
+            <RequiredAdvise error={errors.sku} />
 
-  return (
-    <Box className='input-container' component='div' onChange={handleChange}>
-      <Input
-        name='sku'
-        placeholder='SKU'
-        required
-        value={newProduct.sku || ''}
-      />
-      <Input
-        name='name'
-        placeholder='Name'
-        required
-        value={newProduct.name || ''}
-      />
-      <Input
-        name='shortDescription'
-        placeholder='Short Description'
-        required
-        value={newProduct.shortDescription || ''}
-      />
-      <Input
-        name='price'
-        placeholder='Price'
-        type='number'
-        required
-        value={newProduct.price || ''}
-      />
-      <Input
-        name='vatType'
-        placeholder='Vat Type'
-        type='number'
-        required
-        value={newProduct.vatType || ''}
-      />
-    </Box>
-  );
+            <Input placeholder='Name' {...register('name')} />
+            <RequiredAdvise error={errors.name} />
+
+            <Input
+                placeholder='Short Description'
+                {...register('shortDescription')}
+            />
+            <RequiredAdvise error={errors.shortDescription} />
+
+            <Input placeholder='Price' {...register('price',{valueAsNumber:true})} type='number' />
+            <RequiredAdvise error={errors.price} />
+
+            <Input
+                placeholder='Vat Type'
+                {...register('vatType',{valueAsNumber:true})}
+                type='number'
+            />
+            <RequiredAdvise error={errors.vatType} />
+        </Box>
+    );
 };
 
 export default RequiredFields;

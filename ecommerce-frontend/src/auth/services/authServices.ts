@@ -33,7 +33,7 @@ export const registerUser = async (
             const responseData = error.response?.data.error;
             errorMessage += responseData;
         }
-        console.error('Error adding product:', errorMessage);
+        console.error('Error registering user:', errorMessage);
         throw new Error(errorMessage);
     }
 };

@@ -1,101 +1,104 @@
-import { Box, Input } from '@mui/material';
-import {
-  PRODUCT_STATUS,
-  type NewProduct,
-  type ProductStatus,
-} from '../../../productTypes';
+import { Box, FormHelperText, Input } from '@mui/material';
+import { PRODUCT_STATUS, type ProductStatus } from '../../../productTypes';
+import type { NewProductFormValues } from '../../../schemas/newProductSchema';
 
 import SimpleSelect from '../../UI/Inputs/SimpleSelect';
 import MultipleSelect from '../../UI/Inputs/MultipleSelect';
 
 import { useQuery } from '@tanstack/react-query';
 import { fetchAllCategories } from '../../../services/categoryServices';
-import { useNewProductContext } from '../../../hooks/useNewProduct';
+import {
+    Controller,
+    type Control,
+    type FieldError,
+    type FieldErrors,
+    type UseFormRegister,
+} from 'react-hook-form';
 
-const OptionalFields = () => {
-  const statusOptions: ProductStatus[] = [...PRODUCT_STATUS];
+interface OptionalFieldsProps {
+    control: Control<NewProductFormValues>;
+    register: UseFormRegister<NewProductFormValues>;
+    errors: FieldErrors<NewProductFormValues>;
+}
 
-  const { newProduct, updateField } = useNewProductContext();
+// AUX FUNTION FOR REQUIRED ADVISE
+const RequiredAdvise = ({ error }: { error: FieldError | undefined }) => {
+    return (
+        <>{error && <FormHelperText error>{error?.message}</FormHelperText>}</>
+    );
+};
 
-  const { data } = useQuery({
-    queryKey: ['categories'],
-    queryFn: fetchAllCategories,
-    retry: 3,
-  });
-  const categories = data ?? [];
+const OptionalFields = ({ control, register, errors }: OptionalFieldsProps) => {
+    const { data } = useQuery({
+        queryKey: ['categories'],
+        queryFn: fetchAllCategories,
+        retry: 3,
+    });
+    const categories = data ?? [];
+    const categoriesOptions = categories.map(cat => cat.slug);
+    const statusOptions: ProductStatus[] = [...PRODUCT_STATUS];
 
-  const categoriesOptions = categories.map(cat => cat.slug);
+    return (
+        <Box className='input-container' component='div'>
+            <Controller
+                name='mainCategory'
+                control={control}
+                render={({ field }) => (
+                    <SimpleSelect
+                        label='Main Category'
+                        name='mainCategory'
+                        value={field.value}
+                        options={categoriesOptions}
+                        onChange={field.onChange}
+                    />
+                )}
+            />
 
-  // SELECT simple: mainCategory
-  const handleMainCategoryChange = (value: string | undefined) => {
-    updateField('mainCategory' as keyof NewProduct, value);
-  };
-  // SELECT multiple: otherCategory
-  const handleOtherCategoryChange = (value: string[] | undefined) => {
-    updateField('otherCategory' as keyof NewProduct, value);
-  };
-  // SELECT simple: status
-  const handleStatusChange = (value: ProductStatus | undefined) => {
-    updateField('status' as keyof NewProduct, value);
-  };
-  // INPUTS numéricos / string
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
+            <Controller
+                name='otherCategory'
+                control={control}
+                render={({ field }) => (
+                    <MultipleSelect
+                        label='Other Categories'
+                        name='otherCategories'
+                        value={field.value}
+                        options={categoriesOptions}
+                        onChange={field.onChange}
+                    />
+                )}
+            />
 
-    if (name === 'stock') {
-      updateField(name, Number(value));
-    } else {
-      updateField(name as keyof NewProduct, value);
-    }
-  };
+            <Controller
+                name='status'
+                control={control}
+                render={({ field }) => (
+                    <SimpleSelect
+                        label='Status'
+                        name='status'
+                        value={field.value}
+                        options={statusOptions}
+                        onChange={field.onChange}
+                    />
+                )}
+            />
 
-  return (
-    <Box className='input-container' component='div'>
-      <SimpleSelect
-        label='Main Category'
-        name='mainCategory'
-        value={newProduct.mainCategory}
-        options={categoriesOptions}
-        onChange={handleMainCategoryChange}
-      />
-
-      <MultipleSelect
-        label='Other Categories'
-        name='otherCategories'
-        value={newProduct.otherCategory}
-        options={categoriesOptions}
-        onChange={handleOtherCategoryChange}
-      />
-
-      <SimpleSelect
-        label='Status'
-        name='status'
-        value={newProduct.status}
-        options={statusOptions}
-        onChange={handleStatusChange}
-      />
-
-      {/* slug, longDescription, brand, stock */}
-      <Box className='input-container' component='div' onChange={handleChange}>
-        <Input name='slug' placeholder='Slug' value={newProduct.slug || ''} />
-        <Input
-          name='longDescription'
-          placeholder='Long Description'
-          value={newProduct.longDescription || ''}
-        />
-        <Input
-          name='brand'
-          placeholder='Brand'
-          value={newProduct.brand || ''}
-        />
-        <Input
-          name='stock'
-          placeholder='Stock'
-          value={newProduct.stock || ''}
-        />
-      </Box>
-    </Box>
-  );
+            {/* slug, longDescription, brand, stock */}
+            <Box className='input-container' component='div'>
+                <Input placeholder='Slug' {...register('slug')} />
+                <Input
+                    placeholder='Long Description'
+                    {...register('longDescription')}
+                />
+                <Input placeholder='Brand' {...register('brand')} />
+                <Input
+                    placeholder='Stock'
+                    {...register('stock', { valueAsNumber: true })}
+                    type='number'
+                />
+                <RequiredAdvise error={errors.stock} />
+            </Box>
+        </Box>
+    );
 };
 
 export default OptionalFields;

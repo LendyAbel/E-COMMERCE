@@ -1,9 +1,9 @@
 import { Add } from '@mui/icons-material';
 import { Fab } from '@mui/material';
-import { useNewProductDialogContext } from '../../../hooks/useNewProductDialog';
+import { useNewProductDialog } from '../../../hooks/useNewProductDialog';
 
 const AddProductButton = () => {
-  const { open } = useNewProductDialogContext();
+  const { open } = useNewProductDialog();
 
   return (
     <Fab
