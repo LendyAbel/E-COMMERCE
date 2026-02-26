@@ -50,5 +50,3 @@ export interface ProductVariant {
   ean?: string | undefined;
   images?: ProductImage[] | undefined;
 }
-
-export type NewProduct = Omit<Product, 'id'>;

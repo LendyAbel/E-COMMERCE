@@ -1,7 +1,9 @@
 import {
+    Box,
     Card,
     CardContent,
     CardHeader,
+    CardMedia,
     Collapse,
     IconButton,
     Typography,
@@ -29,19 +31,19 @@ const ProductCard = ({ product }: ProductCardProps) => {
     return (
         <Card variant='outlined'>
             <CardHeader title={product.name} />
-            <Typography>
-                {' '}
-                stock:
-                {product.inStock ? (
-                    <Check sx={{ color: 'green' }} />
-                ) : (
-                    <DoNotDisturb sx={{ color: 'red' }} />
-                )}
-            </Typography>
 
             <CardContent>
+                {product.images?.[0] && (
+                    <CardMedia
+                        component='img'
+                        sx={{ width: 150, objectFit: 'cover' }}
+                        image={product.images[0].url}
+                        alt={product.images[0].alt}
+                    />
+                )}
                 <Typography>{product.shortDescription}</Typography>
                 <Typography>Price: {product.price} €</Typography>
+                {/* Imagen del producto */}
                 <IconButton
                     onClick={handleExpandClick}
                     aria-expanded={expand}
@@ -53,7 +55,20 @@ const ProductCard = ({ product }: ProductCardProps) => {
                     <Typography>{product.longDescription}</Typography>
                 </Collapse>
             </CardContent>
-            <AddToCartButton productId={product.id} />
+            <Box sx={{ display: 'flex', gap: 2 }}>
+                <AddToCartButton productId={product.id} />
+                <Typography
+                    variant='body2'
+                    sx={{ display: 'flex', alignItems: 'center' }}
+                >
+                    stock:
+                    {product.inStock ? (
+                        <Check sx={{ color: 'green' }} />
+                    ) : (
+                        <DoNotDisturb sx={{ color: 'red' }} />
+                    )}
+                </Typography>
+            </Box>
         </Card>
     );
 };

@@ -36,6 +36,7 @@ const cartParse = (items: CartItem[]): Cart => {
     return { items, totalItems, totalPrice };
 };
 
+
 export const CartProvider = ({ children }: { children: ReactNode }) => {
     const queryClient = useQueryClient();
     const { user, isAuthenticated } = useAuthContext();
@@ -75,6 +76,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         },
     });
     const addItem = async (item: NewCartItem) => {
+        
         if (isAuthenticated) {
             await addMutate.mutateAsync(item);
         } else {

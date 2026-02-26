@@ -1,6 +1,7 @@
 import axios, { type AxiosResponse } from 'axios';
-import type { NewProduct, Product } from '../productTypes';
+import type { Product } from '../productTypes';
 import axiosInstance from '../../lib/axiosInstance';
+import type { NewProductFormValues } from '../schemas/newProductSchema';
 
 const API_URL = '/api/products';
 
@@ -15,9 +16,9 @@ export const fetchAllProducts = async (): Promise<Product[]> => {
 };
 
 export const addNewProduct = async (
-    newProduct: NewProduct,
+    newProduct: NewProductFormValues,
 ): Promise<Product> => {
-  console.log(newProduct);
+    console.log(newProduct);
     try {
         const res: AxiosResponse<Product> = await axiosInstance.post(
             API_URL,
