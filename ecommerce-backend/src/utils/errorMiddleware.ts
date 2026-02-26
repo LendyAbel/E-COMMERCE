@@ -34,7 +34,6 @@ export const errorMiddleware = (
     if (error instanceof Error) {
         const appError = error as AppError;
         const status = appError.statusCode ?? 500;
-        console.log('APP ERROR **********', error);
         res.status(status).json({ error: appError.message });
         return;
     }

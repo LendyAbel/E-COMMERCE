@@ -15,13 +15,20 @@ const optionalNonNegativeNumber = z.preprocess(val => {
 }, z.number().min(0).optional());
 
 //Sub-schemas
-const ProductImageSchema = z.object({
+export const ProductCategorySchema = z.object({
+    id: z.string().min(1),
+    name: z.string().min(1),
+    slug: z.string().min(1),
+    parentSlug: z.string().optional(),
+});
+
+export const ProductImageSchema = z.object({
     url: z.url('Image URL must be a valid URL'),
     alt: z.string().min(1, 'Image alt is required'),
     isMain: z.boolean().optional(),
 });
 
-const ProductVariantSchema = z.object({
+export const ProductVariantSchema = z.object({
     id: z.string().min(1),
     sku: z.string().min(1),
     attributes: z.record(z.string(), z.string().or(z.number()).or(z.boolean())),
@@ -32,7 +39,8 @@ const ProductVariantSchema = z.object({
 });
 
 //Main Schema
-export const NewProductSchema = z.object({
+export const ProductSchema = z.object({
+    id: z.uuid(),
     sku: z.string().min(1, 'SKU is required'),
     name: z.string().min(1, 'Name is required'),
     shortDescription: z.string().min(1, 'Short description is required'),
@@ -68,3 +76,12 @@ export const NewProductSchema = z.object({
         .record(z.string(), z.string().or(z.number()).or(z.boolean()))
         .optional(),
 });
+
+export const NewProductSchema = ProductSchema.omit({ id: true });
+
+export type ProductCategory = z.infer<typeof ProductCategorySchema>;
+export type ProductImage = z.infer<typeof ProductImageSchema>;
+export type ProductVariant = z.infer<typeof ProductVariantSchema>;
+
+export type Product = z.infer<typeof ProductSchema>;
+export type NewProduct = z.infer<typeof NewProductSchema>;
