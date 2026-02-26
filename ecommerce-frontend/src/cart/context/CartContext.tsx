@@ -36,12 +36,10 @@ const cartParse = (items: CartItem[]): Cart => {
     return { items, totalItems, totalPrice };
 };
 
-
 export const CartProvider = ({ children }: { children: ReactNode }) => {
     const queryClient = useQueryClient();
     const { user, isAuthenticated } = useAuthContext();
     const [guestCart, setGuestCart] = useState<CartItem[]>(getGuestCart);
-
 
     //GET PRODUCT DETAIL
     //fetch products
@@ -76,7 +74,6 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         },
     });
     const addItem = async (item: NewCartItem) => {
-        
         if (isAuthenticated) {
             await addMutate.mutateAsync(item);
         } else {
@@ -121,7 +118,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
             await deleteMutate.mutateAsync({ itemId, variantId });
         } else {
             const updatedCart = guestCart.filter(
-                i => i.productId !== itemId && i.variantId !== variantId,
+                i => !(i.productId == itemId && i.variantId == variantId),
             );
             setGuestCart(updatedCart);
             saveGuestCart(updatedCart);

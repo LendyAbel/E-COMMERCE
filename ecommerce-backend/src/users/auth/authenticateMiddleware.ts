@@ -11,9 +11,8 @@ export const authenticateMiddleware = (
     const JWT_SECRET = validJtwSecret();
 
     const authHeader = req.header('Authorization');
-    if (!authHeader || !authHeader.startsWith('Bearer')) {
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
         throwAppError('Authorization header missing or malformed', 401);
-        return;
     }
 
     const token = authHeader.replace('Bearer ', '').trim();
@@ -29,6 +28,5 @@ export const authenticateMiddleware = (
         next();
     } catch (error) {
         throwAppError('Invalid token', 401);
-        next(error);
     }
 };
