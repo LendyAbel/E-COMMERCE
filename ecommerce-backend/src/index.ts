@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import express from 'express';
+import cors from 'cors';
 
 import productsRouter from './products/routes/productsRouter';
 import categoriesRouter from './products/routes/categoriesRouter';
@@ -12,6 +13,18 @@ import authRouter from './auth/routes/authRouter';
 import { errorMiddleware } from './utils/errorMiddleware';
 
 const app = express();
+
+const CORS_ORIGIN = process.env.CORS_ORIGIN ?? 'http://localhost:5173';
+
+app.use(
+    cors({
+        origin: CORS_ORIGIN,
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+        allowedHeaders: ['Content-Type', 'Authorization'],
+        credentials: true,
+    }),
+);
+
 app.use(express.json());
 
 const PORT = process.env.PORT ?? 3000;
