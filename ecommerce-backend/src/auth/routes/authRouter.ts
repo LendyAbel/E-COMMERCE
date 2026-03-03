@@ -1,9 +1,9 @@
 import express, { NextFunction, type Request, type Response } from 'express';
-import { AuthResponse, LoginBody, RegisterBody } from '../../types';
-import { comparePassword, hashPassword, signToken } from '../../util';
-import userService from '../../services/userService';
+import { AuthResponse, LoginBody, RegisterBody } from '../../users/types';
+import { comparePassword, hashPassword, signToken } from '../../users/util';
+import userService from '../../users/services/userService';
 
-import { throwAppError } from '../../../utils/errorMiddleware';
+import { throwAppError } from '../../utils/errorMiddleware';
 
 const router = express.Router();
 

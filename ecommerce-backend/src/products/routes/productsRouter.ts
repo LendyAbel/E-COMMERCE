@@ -7,8 +7,8 @@ import express, {
 import { Product } from '../ProductTypes';
 
 import productService from '../services/productServices';
-import { authenticateMiddleware } from '../../users/auth/authenticateMiddleware';
-import { requireRole } from '../../users/auth/roleMiddleware';
+import { authenticateMiddleware } from '../../auth/authenticateMiddleware';
+import { requireRole } from '../../auth/roleMiddleware';
 import { NewProductValidator } from '../schemas/newProductValidator';
 
 const router = express.Router();

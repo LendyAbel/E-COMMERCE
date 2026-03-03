@@ -7,7 +7,7 @@ import productsRouter from './products/routes/productsRouter';
 import categoriesRouter from './products/routes/categoriesRouter';
 import cartRouter from './cart/router/cartRouter';
 import userRouter from './users/routes/usersRouter';
-import authRouter from './users/auth/routes/authRouter';
+import authRouter from './auth/routes/authRouter';
 
 import { errorMiddleware } from './utils/errorMiddleware';
 

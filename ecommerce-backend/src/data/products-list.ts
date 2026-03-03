@@ -1,25 +1,28 @@
 import type { Product, ProductCategory } from '../products/ProductTypes.js';
+import { v4 as uuid} from 'uuid'
+const id = uuid()
+
 
 export const categories: ProductCategory[] = [
     {
-        id: 'cat-001',
+        id,
         name: 'Electrónica',
         slug: 'electronica',
     },
     {
-        id: 'cat-002',
+        id,
         name: 'Periféricos',
         slug: 'perifericos',
         parentSlug: 'electronica',
     },
     {
-        id: 'cat-003',
+        id,
         name: 'Audio',
         slug: 'audio',
         parentSlug: 'electronica',
     },
     {
-        id: 'cat-004',
+        id,
         name: 'Gaming',
         slug: 'gaming',
         parentSlug: 'electronica',
@@ -28,7 +31,7 @@ export const categories: ProductCategory[] = [
 
 export const products: Product[] = [
     {
-        id: 'prod-001',
+        id,
         sku: 'MOUSE-LOGI-G502-BLK',
         name: 'Ratón gaming Logitech G502',
         slug: 'raton-gaming-logitech-g502',
@@ -58,14 +61,14 @@ export const products: Product[] = [
         ],
         variants: [
             {
-                id: 'prod-001-var-01',
+                id,
                 sku: 'MOUSE-LOGI-G502-BLK',
                 attributes: { color: 'negro', handed: 'derecha' },
                 price: 69.99,
                 stock: 80,
             },
             {
-                id: 'prod-001-var-02',
+                id,
                 sku: 'MOUSE-LOGI-G502-WHT',
                 attributes: { color: 'blanco', handed: 'derecha' },
                 price: 72.99,
@@ -80,7 +83,7 @@ export const products: Product[] = [
         },
     },
     {
-        id: 'prod-002',
+        id,
         sku: 'KEYB-MECH-RGB-TKL',
         name: 'Teclado mecánico TKL RGB',
         slug: 'teclado-mecanico-tkl-rgb',
@@ -105,14 +108,14 @@ export const products: Product[] = [
         ],
         variants: [
             {
-                id: 'prod-002-var-01',
+                id,
                 sku: 'KEYB-MECH-RGB-TKL-RED',
                 attributes: { switch: 'red', layout: 'ES' },
                 price: 89.9,
                 stock: 40,
             },
             {
-                id: 'prod-002-var-02',
+                id,
                 sku: 'KEYB-MECH-RGB-TKL-BROWN',
                 attributes: { switch: 'brown', layout: 'ES' },
                 price: 94.9,
@@ -127,7 +130,7 @@ export const products: Product[] = [
         },
     },
     {
-        id: 'prod-003',
+        id,
         sku: 'HEADPH-BT-ANC-BLK',
         name: 'Auriculares Bluetooth con ANC',
         slug: 'auriculares-bluetooth-anc',
@@ -158,7 +161,7 @@ export const products: Product[] = [
         },
     },
     {
-        id: 'prod-004',
+        id,
         sku: 'MONITOR-27-144HZ-IPS',
         name: 'Monitor 27" 144Hz IPS',
         slug: 'monitor-27-144hz-ips',
@@ -189,7 +192,7 @@ export const products: Product[] = [
         },
     },
     {
-        id: 'prod-005',
+        id,
         sku: 'MOUSEPAD-XL-RGB',
         name: 'Alfombrilla gaming XL RGB',
         slug: 'alfombrilla-gaming-xl-rgb',

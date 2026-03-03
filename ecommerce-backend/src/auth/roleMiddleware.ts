@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from 'express';
-import { UserRole } from '../types';
-import { throwAppError } from '../../utils/errorMiddleware';
+import { UserRole } from '../users/types';
+import { throwAppError } from '../utils/errorMiddleware';
 
 export const requireRole = (allowedRoles: UserRole[]) => {
     return (req: Request, _res: Response, _next: NextFunction): void => {

@@ -12,9 +12,9 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const resetNotification = useCallback(() => {
+    setIsOpen(false);
     setMessage('');
     setType('info');
-    setIsOpen(false);
   }, []);
 
   const setNotification = useCallback(
